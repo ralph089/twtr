@@ -11,15 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Parses the entries of the CSV file into a list of {@link RelationalEntry}.
+ * Parses a CSV file.
  */
 public class RelationalParser {
 
     /**
-     * Parse CSV-input of URL.
+     * Parses the entries of the CSV file into a list of {@link RelationalEntry}.
      *
-     * @param resourceUrl the resource url
-     * @return list
+     * @param resourceUrl the resource url of the CSV file.
+     * @return list of {@link RelationalEntry}.
      */
     public List<RelationalEntry> parseRelationalExportedData(String resourceUrl) {
 
@@ -33,7 +33,7 @@ public class RelationalParser {
         Deserializer deserializer = CsvIOFactory.createFactory(RelationalEntry.class).createDeserializer();
         deserializer.open(reader);
 
-        List<RelationalEntry> relationalEntryList = new ArrayList<RelationalEntry>();
+        List<RelationalEntry> relationalEntryList = new ArrayList<>();
 
         while (deserializer.hasNext()) {
             RelationalEntry entry = deserializer.next();
