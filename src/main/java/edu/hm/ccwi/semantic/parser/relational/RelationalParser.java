@@ -20,6 +20,7 @@ public class RelationalParser {
      *
      * @param resourceUrl the resource url of the CSV file.
      * @return list of {@link RelationalEntry}.
+     * @author Max Auch
      */
     public List<RelationalEntry> parseRelationalExportedData(String resourceUrl) {
 

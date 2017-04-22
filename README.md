@@ -2,6 +2,39 @@
 
 TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu werden Tweets mit zusätzlichen Informationen hinterlegt und in einem RDF-Graphen gespeichert. Mittels einer Webapplikation können diese Informationen anschließend abgefragt werden.
 
+## RDF Vokabular
+...
+
+### Beispielausgabe
+```xml
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:twtr="http://example.org/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+  <twtr:TwitterAccount rdf:about="http://example.org/MyrtleNewsam">
+    <twtr:tweeted>
+      <twtr:Tweet rdf:about="http://example.org/Tweet/8,10E+17">
+        <twtr:mentions>
+          <twtr:TweetSubject rdf:about="http://example.org/It">
+            <twtr:StressingOut>
+              <twtr:TweetObject rdf:about="http://example.org/Me"/>
+            </twtr:StressingOut>
+          </twtr:TweetSubject>
+        </twtr:mentions>
+        <twtr:tweetText>Trying to play Battlefield 4 and the bastard keep killing me, it's stressing me out. Giving up.</twtr:tweetText>
+        <twtr:tweetID>8,10E+17</twtr:tweetID>
+      </twtr:Tweet>
+    </twtr:tweeted>
+    <twtr:userDescription>I am a gospel songwriter.  Currently recording a gospel CD.  I write children and adult stories. Member of BMI, CCSA and Writers Unite.</twtr:userDescription>
+    <twtr:followerCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
+    >274</twtr:followerCount>
+    <twtr:userID>722982356</twtr:userID>
+    <twtr:userName>Myrtle Newsam</twtr:userName>
+  </twtr:TwitterAccount>
+</rdf:RDF>
+```
+
 ### Zusätzliche Informationen
 Die Tweets werden mit folgenden zusätzlichen Informationen hinterlegt:
 

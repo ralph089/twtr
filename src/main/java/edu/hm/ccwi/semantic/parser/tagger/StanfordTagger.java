@@ -1,8 +1,6 @@
 package edu.hm.ccwi.semantic.parser.tagger;
 
 import edu.hm.ccwi.semantic.parser.relational.RelationalEntry;
-import edu.hm.ccwi.semantic.parser.tagger.model.TaggedTweet;
-import edu.hm.ccwi.semantic.parser.tagger.model.Triplet;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -15,6 +13,8 @@ import java.util.*;
 
 /**
  * The Stanford Part-Of-Speech Tagger (POS Tagger).
+ *
+ * @author Max Auch, Ralph Offinger
  */
 public class StanfordTagger implements Tagger {
 
@@ -52,6 +52,7 @@ public class StanfordTagger implements Tagger {
                 List<CoreMap> sentences = this.document.get(SentencesAnnotation.class);
 
                 HashMap<String, Triplet> analyzedTweet = new HashMap<>();
+                TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription());
 
                 for (CoreMap sentence : sentences) {
                     Tree t = sentence.get(TreeAnnotation.class);
@@ -111,7 +112,7 @@ public class StanfordTagger implements Tagger {
                         }
                     }
                 }
-                taggedTweet = new TaggedTweet(entry.getTweet_id(), analyzedTweet, this.getClass().getSimpleName());
+                taggedTweet = new TaggedTweet(entry.getTweet_id(), twitterUser, entry.getTweetText(), analyzedTweet, this.getClass().getSimpleName());
             }
         }
         return taggedTweet;

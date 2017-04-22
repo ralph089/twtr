@@ -3,8 +3,6 @@ package edu.hm.ccwi.semantic.parser.tagger;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.*;
 import edu.hm.ccwi.semantic.parser.relational.RelationalEntry;
-import edu.hm.ccwi.semantic.parser.tagger.model.TaggedTweet;
-import edu.hm.ccwi.semantic.parser.tagger.model.Triplet;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -13,9 +11,11 @@ import java.util.Properties;
 
 /**
  * The IBM Watson Natural Language Understanding Tagger.
- *
+ * <p>
  * Uses the Natural Language Understanding API.
  * Processes text for advanced analysis, like Part-Of-Speech Tagging (POS Tagging).
+ *
+ * @author Ralph Offinger
  */
 public class WatsonTagger implements Tagger {
 
@@ -36,6 +36,7 @@ public class WatsonTagger implements Tagger {
                 );
 
                 HashMap<String, Triplet> analyzedTweet = new HashMap<>();
+                TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription());
 
                 SemanticRolesOptions options = new SemanticRolesOptions.Builder()
                         .limit(5)
@@ -63,7 +64,7 @@ public class WatsonTagger implements Tagger {
                         analyzedTweet.put(result.getSentence(), triplet);
                     }
                 }
-                taggedTweet = new TaggedTweet(entry.getTweet_id(), analyzedTweet, this.getClass().getSimpleName());
+                taggedTweet = new TaggedTweet(entry.getTweet_id(), twitterUser, entry.getTweetText(), analyzedTweet, this.getClass().getSimpleName());
             }
         }
         return taggedTweet;

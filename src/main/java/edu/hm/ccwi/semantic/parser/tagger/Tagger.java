@@ -1,11 +1,12 @@
 package edu.hm.ccwi.semantic.parser.tagger;
 
 import edu.hm.ccwi.semantic.parser.relational.RelationalEntry;
-import edu.hm.ccwi.semantic.parser.tagger.model.TaggedTweet;
 
 
 /**
  * The interface of a Tagger.
+ *
+ * @author Ralph Offinger
  */
 public interface Tagger {
 

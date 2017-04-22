@@ -145,3 +145,8 @@ hs_err_pid*
 /src/main/resources/credentials/bluemix.properties
 /src/main/resources/tweets/tweet_sample_no_RT_EN_100000.csv
 /angular-app/node_modules/
+!/src/main/java/edu/hm/ccwi/semantic/
+src/main/java/edu/hm/ccwi/semantic/jena/model/
+!/src/main/resources/tweets/tweet_sample_no_RT_EN_short.csv
+!/src/main/java/edu/hm/ccwi/semantic/jena/model/
+/src/main/resources/tweets/taggedTweets.csv

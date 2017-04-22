@@ -1,4 +1,4 @@
-package edu.hm.ccwi.semantic.parser.tagger.model;
+package edu.hm.ccwi.semantic.parser.tagger;
 
 /**
  * A Triplet of a Subject-Verb-Object.
@@ -6,6 +6,7 @@ package edu.hm.ccwi.semantic.parser.tagger.model;
  * @param <T> the Subject
  * @param <U> the Verb
  * @param <V> the Object
+ * @author Max Auch
  */
 public class Triplet<T, U, V> {
 

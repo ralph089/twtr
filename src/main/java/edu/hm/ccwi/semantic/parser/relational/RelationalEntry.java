@@ -5,6 +5,8 @@ import net.sf.jsefa.csv.annotation.CsvField;
 
 /**
  * A representation of a Twitter CSV entry exported from a relational database.
+ *
+ * @author Max Auch
  */
 @CsvDataType()
 public class RelationalEntry {
@@ -150,8 +152,13 @@ public class RelationalEntry {
      *
      * @return the follower count
      */
-    public String getFollower_count() {
-        return follower_count;
+    public int getFollower_count() {
+        try {
+            return Integer.parseInt(follower_count);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     /**

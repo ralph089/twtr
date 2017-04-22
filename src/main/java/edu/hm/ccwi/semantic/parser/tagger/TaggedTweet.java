@@ -1,6 +1,4 @@
-package edu.hm.ccwi.semantic.parser.tagger.model;
-
-import edu.hm.ccwi.semantic.parser.tagger.Tagger;
+package edu.hm.ccwi.semantic.parser.tagger;
 
 import java.io.*;
 import java.util.HashMap;
@@ -8,22 +6,30 @@ import java.util.HashMap;
 
 /**
  * A POS-tagged Tweet.
+ *
+ * @author Ralph Offinger
  */
 public class TaggedTweet {
 
-    private String tweetId;
+    private String tweetID;
+    private TwitterUser twitterUser;
+    private String tweetText;
     private HashMap<String, Triplet> analysedTweet;
     private String tagger;
 
     /**
      * Instantiates a new TaggedTweet.
      *
-     * @param tweetId       the tweet id
+     * @param tweetID       the tweet id
+     * @param twitterUser   the twitter user
+     * @param tweetText     the tweet text
      * @param analysedTweet The sentence of the tweet and the Subject-Verb-Object {@link Triplet}
      * @param tagger        the {@link Tagger} name
      */
-    public TaggedTweet(String tweetId, HashMap analysedTweet, String tagger) {
-        this.tweetId = tweetId;
+    public TaggedTweet(String tweetID, TwitterUser twitterUser, String tweetText, HashMap<String, Triplet> analysedTweet, String tagger) {
+        this.tweetID = tweetID;
+        this.twitterUser = twitterUser;
+        this.tweetText = tweetText;
         this.analysedTweet = analysedTweet;
         this.tagger = tagger;
     }
@@ -66,7 +72,7 @@ public class TaggedTweet {
         }
 
         analysedTweet.forEach((sentence, triplet) -> {
-            sb.append(tweetId);
+            sb.append(tweetID);
             sb.append(';');
             sb.append(tagger);
             sb.append(';');
@@ -89,8 +95,8 @@ public class TaggedTweet {
      *
      * @return the tweet id
      */
-    public String getTweetId() {
-        return tweetId;
+    public String getTweetID() {
+        return tweetID;
     }
 
     /**
@@ -109,5 +115,13 @@ public class TaggedTweet {
      */
     public HashMap<String, Triplet> getAnalysedTweet() {
         return analysedTweet;
+    }
+
+    public TwitterUser getTwitterUser() {
+        return twitterUser;
+    }
+
+    public String getTweetText() {
+        return tweetText;
     }
 }
