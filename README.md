@@ -3,9 +3,9 @@
 TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu werden Tweets aus einer Datenbank mit zusätzlichen Informationen hinterlegt und in einem RDF-Graphen gespeichert. Mittels einer Webapplikation können diese Informationen anschließend abgefragt werden.
 
 ## RDF Vokabular
-...
+![Alt text](http://svgshare.com/i/1QQ.svg)<img src="http://svgshare.com/i/1QQ.svg">
 
-### Beispiel
+## Beispiel
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
 
 ```csv
@@ -52,7 +52,7 @@ Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
   </twtr:TwitterAccount>
 ```
 
-### Beispielabfrage
+#### Beispielabfrage
 Mittels der SPARQL-Anfragesprache lassen sich nun die Daten abfragen. 
 
 In diesem Fall lassen wir uns alle Tweets mit einer Organisation als Proper Noun anzeigen.
@@ -73,14 +73,14 @@ WHERE
   }
 ```
 
-### Rückgabe
+#### Rückgabe
 ```
 | author            | tweetText                          | propNounText |
 |-------------------|------------------------------------|--------------|
 | "OD Hanz Moleman" | "I like my new Eastpak very much!" | "Eastpak"    |
 ```
 
-### Zusätzliche Informationen
+## Zusätzliche Informationen
 Die Tweets werden mit folgenden zusätzlichen Informationen hinterlegt:
 
 #### Subjekt-Verb-Objekt Tagging
