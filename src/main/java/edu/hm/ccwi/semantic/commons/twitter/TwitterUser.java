@@ -1,5 +1,7 @@
-package edu.hm.ccwi.semantic.parser.tagger;
+package edu.hm.ccwi.semantic.commons.twitter;
 
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * A Twitter user.
@@ -8,10 +10,10 @@ package edu.hm.ccwi.semantic.parser.tagger;
  */
 public class TwitterUser {
 
-    private int followerCount;
-    private String userID;
-    private String userName;
-    private String userDescription;
+    private final int followerCount;
+    private final String userID;
+    private final String userName;
+    private final String userDescription;
 
     /**
      * Instantiates a new Twitter user.
@@ -22,9 +24,9 @@ public class TwitterUser {
      * @param userDescription the user description
      */
     public TwitterUser(int followerCount, String userID, String userName, String userDescription) {
-        this.followerCount = followerCount;
-        this.userID = userID;
-        this.userName = userName;
+        this.followerCount = Validate.notNull(followerCount, "Empty Follower Count is not allowed!");
+        this.userID = Validate.notNull(userID, "Empty User ID ist not allowed!");
+        this.userName = Validate.notNull(userName, "Empty Username is not allowed!");
         this.userDescription = userDescription;
     }
 
@@ -63,4 +65,5 @@ public class TwitterUser {
     public String getUserDescription() {
         return userDescription;
     }
+
 }

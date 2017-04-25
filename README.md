@@ -1,46 +1,91 @@
 # TWTR
 
-TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu werden Tweets mit zusätzlichen Informationen hinterlegt und in einem RDF-Graphen gespeichert. Mittels einer Webapplikation können diese Informationen anschließend abgefragt werden.
+TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu werden Tweets aus einer Datenbank mit zusätzlichen Informationen hinterlegt und in einem RDF-Graphen gespeichert. Mittels einer Webapplikation können diese Informationen anschließend abgefragt werden.
 
 ## RDF Vokabular
 ...
 
-### Beispielausgabe
+### Beispiel
+Aus einer CSV-Datei wird folgender Datensatz eingelesen:
+
+```csv
+29;f0b6cca0-66af-4499-abb7-71b0f41bd29c;807720856856109056;8426;17765;285;134;10;0.31981;0.32171;0.67829;"OD Hanz Moleman";118569851;"donate to my paypal #overdraft# Seattle";"I like my new Eastpak very much!"
+```
+
+#### XML-Struktur
+Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
+
 ```xml
-<rdf:RDF
-    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-    xmlns:twtr="http://example.org/"
-    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
-    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
-  <twtr:TwitterAccount rdf:about="http://example.org/MyrtleNewsam">
+<twtr:TwitterAccount rdf:about="http://example.org/118569851">
     <twtr:tweeted>
-      <twtr:Tweet rdf:about="http://example.org/Tweet/8,10E+17">
+      <twtr:Tweet rdf:about="http://example.org/Tweet/807720856856109056">
+        <twtr:contains>
+          <twtr:ProperNoun>
+            <twtr:isA rdf:resource="http://example.org/Organisation"/>
+            <twtr:word>Eastpak</twtr:word>
+          </twtr:ProperNoun>
+        </twtr:contains>
         <twtr:mentions>
-          <twtr:TweetSubject rdf:about="http://example.org/It">
-            <twtr:StressingOut>
-              <twtr:TweetObject rdf:about="http://example.org/Me"/>
-            </twtr:StressingOut>
-          </twtr:TweetSubject>
+          <twtr:Object>
+            <twtr:text>my new Eastpak</twtr:text>
+          </twtr:Object>
         </twtr:mentions>
-        <twtr:tweetText>Trying to play Battlefield 4 and the bastard keep killing me, it's stressing me out. Giving up.</twtr:tweetText>
-        <twtr:tweetID>8,10E+17</twtr:tweetID>
+        <twtr:mentions>
+          <twtr:Verb>
+            <twtr:text>like</twtr:text>
+          </twtr:Verb>
+        </twtr:mentions>
+        <twtr:mentions>
+          <twtr:Subject>
+            <twtr:text>I</twtr:text>
+          </twtr:Subject>
+        </twtr:mentions>
+        <twtr:tweetText>I like my new Eastpak very much!</twtr:tweetText>
+        <twtr:tweetID>807720856856109056</twtr:tweetID>
       </twtr:Tweet>
     </twtr:tweeted>
-    <twtr:userDescription>I am a gospel songwriter.  Currently recording a gospel CD.  I write children and adult stories. Member of BMI, CCSA and Writers Unite.</twtr:userDescription>
+    <twtr:userDescription>donate to my paypal #overdraft# Seattle</twtr:userDescription>
     <twtr:followerCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >274</twtr:followerCount>
-    <twtr:userID>722982356</twtr:userID>
-    <twtr:userName>Myrtle Newsam</twtr:userName>
+    >285</twtr:followerCount>
+    <twtr:userID>118569851</twtr:userID>
+    <twtr:userName>OD Hanz Moleman</twtr:userName>
   </twtr:TwitterAccount>
-</rdf:RDF>
+```
+
+### Beispielabfrage
+Mittels der SPARQL-Anfragesprache lassen sich nun die Daten abfragen. 
+
+In diesem Fall lassen wir uns alle Tweets mit einer Organisation als Proper Noun anzeigen.
+
+```sparql
+PREFIX  twtr: <http://www.example.com>
+
+SELECT  ?author ?tweetText ?propNounText
+WHERE
+  { ?account  a                     twtr:TwitterAccount ;
+              twtr:userName         ?author ;
+              twtr:tweeted          ?tweet .
+    ?tweet    twtr:tweetText        ?tweetText ;
+              twtr:contains         ?propn .
+    ?propn    a                     twtr:ProperNoun ;
+              twtr:isA              twtr:Organisation ;
+              twtr:word             ?propNounText
+  }
+```
+
+### Rückgabe
+```
+| author            | tweetText                          | propNounText |
+|-------------------|------------------------------------|--------------|
+| "OD Hanz Moleman" | "I like my new Eastpak very much!" | "Eastpak"    |
 ```
 
 ### Zusätzliche Informationen
 Die Tweets werden mit folgenden zusätzlichen Informationen hinterlegt:
 
-#### POS-Tagging (Subjekt-Verb-Objekt)
+#### Subjekt-Verb-Objekt Tagging
 
-Derzeit sind zwei verschiedene Varianten von Taggern eingebaut, die noch evaluiert werden müssen:
+Derzeit sind für diesen Zweck zwei verschiedene Varianten von Taggern eingebaut, die noch evaluiert werden müssen:
 
 * IBM Watson Natural Language Understanding Tagger
 * Stanford NLP Tagger mit dem Gate-Twitter-Modell
@@ -51,7 +96,7 @@ Um den Watson Tagger zu nutzen, werden entsprechende IBM Watson Cloud Credential
 (Keyword-Extraction ...)
 
 #### Kategorisierung von Eigennamen 
-(Named-entity recognition ...)
+Derzeit wird dem Tweet das relevanteste Proper Noun hinterlegt. Dazu wird die IBM Watson Natural Language Understanding API abgefragt.
 
 ## Tasks:
 
@@ -62,7 +107,7 @@ Um den Watson Tagger zu nutzen, werden entsprechende IBM Watson Cloud Credential
 - [ ] Überführung der Twitterdaten in den RDF-Triplestore anhand der gegebenen Zielstruktur.
 
 
-## Hinweise zum Start der Umgebung
+## Hinweise zum Start der Umgebung (noch nicht nötig)
 
 Zur persistenten Speicherung der RDF-Graphen und zur Abfrage der Daten über HTTP wird Apache Jena Fuseki eingesetzt. Die Webapplikation zur Abfrage der Daten läuft auf einem nginx Webserver.
 

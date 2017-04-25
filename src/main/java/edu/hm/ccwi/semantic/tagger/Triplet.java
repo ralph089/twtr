@@ -1,4 +1,6 @@
-package edu.hm.ccwi.semantic.parser.tagger;
+package edu.hm.ccwi.semantic.tagger;
+
+import org.apache.commons.lang3.Validate;
 
 /**
  * A Triplet of a Subject-Verb-Object.
@@ -22,9 +24,9 @@ public class Triplet<T, U, V> {
      * @param object  the object
      */
     public Triplet(T subject, U verb, V object) {
-        this.subject = subject;
-        this.verb = verb;
-        this.object = object;
+        this.subject = Validate.notNull(subject, "Empty Subject not allowed");
+        this.verb = Validate.notNull(verb, "Empty Verb not allowed!");
+        this.object = Validate.notNull(object, "Empty Object not allowed!");
     }
 
     /**

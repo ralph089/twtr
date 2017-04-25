@@ -1,0 +1,207 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc11: <http://purl.org/dc/elements/1.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix twtr: <http://example.org/> .
+
+twtr:
+  a owl:Ontology ;
+  dc11:date "$Date: 2017-04-21 23:18:26 $" ;
+  dc11:creator "Ralph Offinger"^^xsd:string ;
+  dc11:description "The Twitter (TWTR) RDF vocabulary, described using W3C RDF Schema." ;
+  dc11:title "TWTR (Twitter) vocabulary" .
+
+### A Twitter Account tweeted a Tweet.
+
+twtr:TwitterAccount
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:comment "An account on the social networking site Twitter" ;
+  rdfs:subClassOf twtr:Entity ;
+  rdfs:label "Twitter Account" .
+
+twtr:tweeted
+  rdf:type    rdf:Property , owl:ObjectProperty ;
+  rdfs:comment "A Tweet gets tweeted from a TwitterAccount." ;
+  rdfs:domain twtr:TwitterAccount ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "tweeted" ;
+  rdfs:range twtr:Tweet .
+
+twtr:Tweet
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:comment "A tweet is a text message limited to 140 characters in length, that is broadcast and readable by anyone who accesses Twitter." ;
+  rdfs:label "Tweet" .
+
+### A Tweet mentions a subject–verb–object (SVO)-Triple
+
+twtr:mentions
+  rdf:type    rdf:Property , owl:ObjectProperty ;
+  rdfs:comment "A Tweet might mention a SVO Triple." ;
+  rdfs:domain twtr:Tweet ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "mentions" ;
+  rdfs:range twtr:SVO .
+
+twtr:SVO
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:comment "A subject–verb–object (SVO) sentence structure where the subject comes first, the verb second, and the object third." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:subClassOf owl:Thing ;
+  rdfs:label "SVO" .
+
+twtr:Subject
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:comment "The relation between a phrase and a verb in a tweet, that represents the person or thing that performs the action or about which something is stated." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "Subject" ;
+  rdfs:subClassOf twtr:SVO .
+
+twtr:Verb
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:comment "A verb signals an action, an occurrence, or a state of being." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "Verb" ;
+  rdfs:subClassOf twtr:SVO .
+
+twtr:Object
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:comment "The relation between a phrase and a verb in a tweet, in which the relation is central to the verb." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "Object" ;
+  rdfs:subClassOf twtr:SVO .
+
+twtr:contains
+  rdf:type    rdf:Property , owl:ObjectProperty ;
+  rdfs:comment "A Tweets has part of speech." ;
+  rdfs:domain twtr:Tweet ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "contains" ;
+  rdfs:range twtr:POS .
+
+
+### POS
+
+twtr:POS
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:comment "POS." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "POS" .
+
+twtr:CommonNoun
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:comment "" ;
+  rdfs:subClassOf twtr:POS ;
+  rdfs:label "Common Noun" .
+
+twtr:ProperNoun
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:comment "" ;
+  rdfs:subClassOf twtr:POS ;
+  rdfs:label "Proper Noun" .
+
+twtr:word
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "The word of the POS." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "word" ;
+  rdfs:domain twtr:POS ;
+  rdfs:range rdfs:Literal .
+
+### Entity definitions
+
+twtr:isA
+  rdf:type    rdf:Property , owl:ObjectProperty ;
+  rdfs:comment "A Twitter Account and a proper noun can be a Entity." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "is a" ;
+  rdfs:range twtr:Entity .
+
+twtr:Entity
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:comment "A Entity." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "Entity" .
+
+twtr:Person
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:comment "Person" ;
+  rdfs:subClassOf twtr:Entity ;
+  rdfs:label "Person" .
+
+twtr:Organisation
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:comment "Organisation" ;
+  rdfs:subClassOf twtr:Entity ;
+  rdfs:label "Organisation" .
+
+twtr:Place
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:comment "Place" ;
+  rdfs:subClassOf twtr:Entity ;
+  rdfs:label "Place" .
+
+### Twitter Account Properties
+
+twtr:userID
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "A Twitter Account ID." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "user ID" ;
+  rdfs:domain twtr:TwitterAccount ;
+  rdfs:range rdfs:Literal .
+
+twtr:userName
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "A short informal nickname characterising a Twitter Account." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "username" ;
+  rdfs:domain twtr:TwitterAccount ;
+  rdfs:range rdfs:Literal .
+
+twtr:userDescription
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "A short personal description of a Twitter Account." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "user description" ;
+  rdfs:domain twtr:TwitterAccount ;
+  rdfs:range rdfs:Literal .
+
+twtr:tweetText
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "A status message within Twitter." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "Tweet Text" ;
+  rdfs:domain twtr:Tweet ;
+  rdfs:range rdfs:Literal .
+
+twtr:tweetID
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "A Tweet ID." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "tweet ID" ;
+  rdfs:domain twtr:Tweet ;
+  rdfs:range xsd:integer .
+
+twtr:followerCount
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "Amount of users who have subscribed to a Twitter Account." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "follower count" ;
+  rdfs:domain twtr:TwitterAccount ;
+  rdfs:range xsd:integer .
+
+twtr:text
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "Text of a Subject, Verb or Object." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "text" ;
+  rdfs:domain twtr:SVO ;
+  rdfs:range rdfs:Literal .

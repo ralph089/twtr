@@ -142,11 +142,15 @@ hs_err_pid*
 # Crashlytics plugin (for Android Studio and IntelliJ)
 /target/
 /credentials/bluemix.properties
-/src/main/resources/credentials/bluemix.properties
+/cred/bluemix.properties
 /src/main/resources/tweets/tweet_sample_no_RT_EN_100000.csv
 /angular-app/node_modules/
 !/src/main/java/edu/hm/ccwi/semantic/
-src/main/java/edu/hm/ccwi/semantic/jena/model/
+src/main/java/edu/hm/ccwi/semantic/rdf/model/
 !/src/main/resources/tweets/tweet_sample_no_RT_EN_short.csv
-!/src/main/java/edu/hm/ccwi/semantic/jena/model/
+!/edu/hm/ccwi/semantic/rdf/model/
 /src/main/resources/tweets/taggedTweets.csv
+!/src/main/java/edu/hm/ccwi/semantic/rdf/model/
+!/src/main/java/edu/hm/ccwi/semantic/rdf/vocab/TWTR.java
+!/src/main/resources/tweets/taggedTweets.csv
+/src/main/resources/cred/bluemix.properties

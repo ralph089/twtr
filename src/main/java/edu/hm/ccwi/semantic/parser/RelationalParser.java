@@ -1,4 +1,4 @@
-package edu.hm.ccwi.semantic.parser.relational;
+package edu.hm.ccwi.semantic.parser;
 
 import net.sf.jsefa.Deserializer;
 import net.sf.jsefa.csv.CsvIOFactory;
@@ -38,7 +38,9 @@ public class RelationalParser {
 
         while (deserializer.hasNext()) {
             RelationalEntry entry = deserializer.next();
-            relationalEntryList.add(entry);
+            if (entry != null && entry.getTweetText() != null && entry.getTweetText() != "") {
+                relationalEntryList.add(entry);
+            }
         }
         deserializer.close(true);
 

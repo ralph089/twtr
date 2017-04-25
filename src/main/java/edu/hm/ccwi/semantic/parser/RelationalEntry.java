@@ -1,4 +1,4 @@
-package edu.hm.ccwi.semantic.parser.relational;
+package edu.hm.ccwi.semantic.parser;
 
 import net.sf.jsefa.csv.annotation.CsvDataType;
 import net.sf.jsefa.csv.annotation.CsvField;

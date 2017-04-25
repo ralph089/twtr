@@ -1,6 +1,10 @@
-package edu.hm.ccwi.semantic.parser.tagger;
+package edu.hm.ccwi.semantic.tagger.stanford;
 
-import edu.hm.ccwi.semantic.parser.relational.RelationalEntry;
+import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.AnalysisResults;
+import edu.hm.ccwi.semantic.commons.twitter.TwitterUser;
+import edu.hm.ccwi.semantic.parser.RelationalEntry;
+import edu.hm.ccwi.semantic.tagger.Tagger;
+import edu.hm.ccwi.semantic.tagger.Triplet;
 import edu.stanford.nlp.ling.CoreAnnotations.SentencesAnnotation;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
@@ -12,21 +16,26 @@ import java.util.*;
 
 
 /**
- * The Stanford Part-Of-Speech Tagger (POS Tagger).
+ * The Stanford Tagger.
+ * <p>
+ * Uses the Stanford Core API for semantic tagging (subject, verb, object).
  *
  * @author Max Auch, Ralph Offinger
  */
-public class StanfordTagger implements Tagger {
+public class StanfordTagger extends Tagger {
 
-    private TaggedTweet taggedTweet;
     private Properties properties;
     private StanfordCoreNLP pipeline;
     private Annotation document;
 
     /**
      * Instantiates a new Stanford tagger.
+     *
+     * @param limit the limit
      */
-    public StanfordTagger() {
+    public StanfordTagger(int limit) {
+        super(limit);
+
         properties = new Properties();
         properties.put("annotators", "tokenize, ssplit, pos, lemma, ner, parse, dcoref");
         properties.put("quiet", true);
@@ -40,7 +49,10 @@ public class StanfordTagger implements Tagger {
         }
     }
 
-    public TaggedTweet tagTweet(RelationalEntry entry) {
+    @Override
+    protected HashMap<String, Triplet> tagSemantics(RelationalEntry entry, AnalysisResults results) {
+
+        HashMap<String, Triplet> analyzedTweet = null;
         if (entry.getTweetText() != null) {
             if (entry.getTweetText() != "" && !entry.getTweetText().isEmpty()) {
 
@@ -51,7 +63,8 @@ public class StanfordTagger implements Tagger {
 
                 List<CoreMap> sentences = this.document.get(SentencesAnnotation.class);
 
-                HashMap<String, Triplet> analyzedTweet = new HashMap<>();
+                analyzedTweet = new HashMap<>();
+
                 TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription());
 
                 for (CoreMap sentence : sentences) {
@@ -112,10 +125,9 @@ public class StanfordTagger implements Tagger {
                         }
                     }
                 }
-                taggedTweet = new TaggedTweet(entry.getTweet_id(), twitterUser, entry.getTweetText(), analyzedTweet, this.getClass().getSimpleName());
             }
         }
-        return taggedTweet;
+        return analyzedTweet;
     }
 }
 
