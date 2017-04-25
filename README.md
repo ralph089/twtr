@@ -55,7 +55,7 @@ Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
 #### Beispielabfrage
 Mittels der SPARQL-Anfragesprache lassen sich nun die Daten abfragen. 
 
-In diesem Fall lassen wir uns alle Tweets mit einer Organisation als Proper Noun anzeigen.
+In diesem Fall lassen wir uns alle Tweets anzeigen, deren Proper Noun eine Organisation ist.
 
 ```sparql
 PREFIX  twtr: <http://www.example.com>
