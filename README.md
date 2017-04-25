@@ -3,7 +3,7 @@
 TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu werden Tweets aus einer Datenbank mit zusätzlichen Informationen hinterlegt und in einem RDF-Graphen gespeichert. Mittels einer Webapplikation können diese Informationen anschließend abgefragt werden.
 
 ## RDF Vokabular
-![Alt text](http://svgshare.com/i/1QQ.svg)<img src="http://svgshare.com/i/1QQ.svg">
+<img src="http://svgshare.com/i/1QQ.svg">
 
 ## Beispiel
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
