@@ -1,6 +1,7 @@
 package edu.hm.ccwi.semantic.tagger;
 
 import edu.hm.ccwi.semantic.parser.RelationalEntry;
+import edu.hm.ccwi.semantic.tagger.models.ProperNoun;
 import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
 import edu.hm.ccwi.semantic.tagger.ner.NERTagger;
 import edu.hm.ccwi.semantic.tagger.triplet.TripletTagger;
@@ -127,7 +128,12 @@ public class StanfordTagger extends Tagger {
                 }
             }
 
-            TaggedSentence posTaggedSentence = new TaggedSentence(sentence.toString(), tripletList, adjectiveList, properNounList, nounList);
+            ArrayList<ProperNoun> unrelatedProperNounList = new ArrayList<>();
+            for(String properNoun : properNounList) {
+                unrelatedProperNounList.add(new ProperNoun(properNoun, tagEntity(properNoun)));
+            }
+
+            TaggedSentence posTaggedSentence = new TaggedSentence(sentence.toString(), tripletList, adjectiveList, unrelatedProperNounList, nounList);
             posTaggedSentences.add(posTaggedSentence);
         }
         return posTaggedSentences;

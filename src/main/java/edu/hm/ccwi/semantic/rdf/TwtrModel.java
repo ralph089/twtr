@@ -1,6 +1,7 @@
 package edu.hm.ccwi.semantic.rdf;
 
 import edu.hm.ccwi.semantic.rdf.vocab.TWTR;
+import edu.hm.ccwi.semantic.tagger.models.ProperNoun;
 import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;
@@ -67,10 +68,11 @@ public class TwtrModel {
     }
 
     private void createUnrelatedNouns(Resource tweet, TaggedSentence sentence) {
-        for (String pNounStr : sentence.getUnrelatedProperNouns()) {
+        for (ProperNoun pNounObj : sentence.getUnrelatedProperNouns()) {
             Resource pNoun = model.createResource()
                     .addProperty(RDF.type, TWTR.ProperNoun)
-                    .addProperty(TWTR.word, pNounStr);
+                    .addProperty(TWTR.word, pNounObj.getWord());
+            createEntity(pNoun, pNounObj.getEntity());
             tweet.addProperty(TWTR.contains, pNoun);
         }
 

@@ -17,7 +17,7 @@ public class TaggedSentence {
     private String sentence;
     private List<Triplet<Subj, Verb, Obj>> triplets;
     private List<String> adjectives;
-    private List<String> unrelatedProperNouns;
+    private List<ProperNoun> unrelatedProperNouns;
     private List<String> unrelatedCommonNouns;
 
     /**
@@ -29,7 +29,7 @@ public class TaggedSentence {
      * @param unrelatedProperNouns the unrelated proper nouns
      * @param unrelatedCommonNouns the unrelated common nouns
      */
-    public TaggedSentence(String sentence, List<Triplet<Subj, Verb, Obj>> triplets, List<String> adjectives, List<String> unrelatedProperNouns, List<String> unrelatedCommonNouns) {
+    public TaggedSentence(String sentence, List<Triplet<Subj, Verb, Obj>> triplets, List<String> adjectives, List<ProperNoun> unrelatedProperNouns, List<String> unrelatedCommonNouns) {
         this.sentence = sentence;
         this.triplets = triplets;
         this.adjectives = adjectives;
@@ -42,7 +42,7 @@ public class TaggedSentence {
      *
      * @return the unrelated proper nouns
      */
-    public List<String> getUnrelatedProperNouns() {
+    public List<ProperNoun> getUnrelatedProperNouns() {
         return unrelatedProperNouns;
     }
 

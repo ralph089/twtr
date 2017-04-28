@@ -35,15 +35,6 @@ public class StanfordTripletTagger extends TripletTagger {
         pipeline = StanfordNLP.getInstance().getPipeline();
     }
 
-    /**
-     * Gets pipeline.
-     *
-     * @return the pipeline
-     */
-    public StanfordCoreNLP getPipeline() {
-        return pipeline;
-    }
-
     @Override
     public List<Triplet<Subj, Verb, Obj>> tagSemantics(String tweetText) {
         Annotation document = new Annotation(tweetText);

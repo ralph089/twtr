@@ -16,7 +16,7 @@ Aus einer CSV-Datei wird folgender Datensatz eingelesen:
 Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
 
 ```xml
-  <twtr:TwitterAccount rdf:about="http://example.org/14968996">
+<twtr:TwitterAccount rdf:about="http://example.org/14968996">
     <twtr:tweeted>
       <twtr:Tweet rdf:about="http://example.org/Tweet/781935565872693248">
         <twtr:contains>
@@ -41,6 +41,9 @@ Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
         </twtr:contains>
         <twtr:contains>
           <twtr:ProperNoun>
+            <twtr:isEntity>
+              <twtr:Organisation/>
+            </twtr:isEntity>
             <twtr:word>Microsoft</twtr:word>
           </twtr:ProperNoun>
         </twtr:contains>
