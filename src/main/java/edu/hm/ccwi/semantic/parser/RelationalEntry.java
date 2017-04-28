@@ -12,67 +12,42 @@ import net.sf.jsefa.csv.annotation.CsvField;
 public class RelationalEntry {
 
     @CsvField(pos = 1)
-    private String resultid;
+    private String tweet_id;
 
     @CsvField(pos = 2)
     private String dbidTwitterUser;
 
     @CsvField(pos = 3)
-    private String tweet_id;
-
-    @CsvField(pos = 4)
     private String accountAgeInDays;
 
-    @CsvField(pos = 5)
+    @CsvField(pos = 4)
     private String statuses_count;
 
-    @CsvField(pos = 6)
+    @CsvField(pos = 5)
     private String follower_count;
 
-    @CsvField(pos = 7)
+    @CsvField(pos = 6)
     private String friends_count;
 
-    @CsvField(pos = 8)
+    @CsvField(pos = 7)
     private String listed_count;
-
+    @CsvField(pos = 8)
+    private String location;
     @CsvField(pos = 9)
-    private String strategic_position;
-
-    @CsvField(pos = 10)
-    private String activity;
-
-    @CsvField(pos = 11)
-    private String activityNegativ;
-
-    @CsvField(pos = 12)
     private String username;
-
-    @CsvField(pos = 13)
+    @CsvField(pos = 10)
     private String userId;
-
-    @CsvField(pos = 14)
+    @CsvField(pos = 11)
     private String userDescription;
-
-    @CsvField(pos = 15)
+    @CsvField(pos = 12)
     private String tweetText;
 
-
-    /**
-     * Gets resultid.
-     *
-     * @return the resultid
-     */
-    public String getResultid() {
-        return resultid;
+    public String getLocation() {
+        return location;
     }
 
-    /**
-     * Sets resultid.
-     *
-     * @param resultid the resultid
-     */
-    public void setResultid(String resultid) {
-        this.resultid = resultid;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     /**
@@ -204,60 +179,6 @@ public class RelationalEntry {
      */
     public void setListed_count(String listed_count) {
         this.listed_count = listed_count;
-    }
-
-    /**
-     * Gets strategic position.
-     *
-     * @return the strategic position
-     */
-    public String getStrategic_position() {
-        return strategic_position;
-    }
-
-    /**
-     * Sets strategic position.
-     *
-     * @param strategic_position the strategic position
-     */
-    public void setStrategic_position(String strategic_position) {
-        this.strategic_position = strategic_position;
-    }
-
-    /**
-     * Gets activity.
-     *
-     * @return the activity
-     */
-    public String getActivity() {
-        return activity;
-    }
-
-    /**
-     * Sets activity.
-     *
-     * @param activity the activity
-     */
-    public void setActivity(String activity) {
-        this.activity = activity;
-    }
-
-    /**
-     * Gets activity negativ.
-     *
-     * @return the activity negativ
-     */
-    public String getActivityNegativ() {
-        return activityNegativ;
-    }
-
-    /**
-     * Sets activity negativ.
-     *
-     * @param activityNegativ the activity negativ
-     */
-    public void setActivityNegativ(String activityNegativ) {
-        this.activityNegativ = activityNegativ;
     }
 
     /**

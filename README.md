@@ -3,81 +3,116 @@
 TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu werden Tweets aus einer Datenbank mit zusätzlichen Informationen hinterlegt und in einem RDF-Graphen gespeichert. Mittels einer Webapplikation können diese Informationen anschließend abgefragt werden.
 
 ## RDF Vokabular
-<img src="http://svgshare.com/i/1QQ.svg">
+<img src="http://svgshare.com/i/1Ts.svg">
 
 ## Beispiel
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
 
 ```csv
-29;f0b6cca0-66af-4499-abb7-71b0f41bd29c;807720856856109056;8426;17765;285;134;10;0.31981;0.32171;0.67829;"OD Hanz Moleman";118569851;"donate to my paypal #overdraft# Seattle";"I like my new Eastpak very much!"
+781935565872693248;14968996;3253;11130;2445;1864;235;Massachusetts;Michael Corey;14968996;★Columnist★Entrepreneur★Microsoft MVP★VMware vExpert★Author★Oracle Ace★Speaker★Virtualization Nut★Blog: http://michaelcorey.com/;Microsoft Ignite: How algorithms, the cloud, IoT and data are changing computing https://t.co/klbOZM6aCm
 ```
 
 #### XML-Struktur
 Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
 
 ```xml
-<twtr:TwitterAccount rdf:about="http://example.org/118569851">
+  <twtr:TwitterAccount rdf:about="http://example.org/14968996">
     <twtr:tweeted>
-      <twtr:Tweet rdf:about="http://example.org/Tweet/807720856856109056">
+      <twtr:Tweet rdf:about="http://example.org/Tweet/781935565872693248">
         <twtr:contains>
           <twtr:ProperNoun>
-            <twtr:isA rdf:resource="http://example.org/Organisation"/>
-            <twtr:word>Eastpak</twtr:word>
+            <twtr:word>data</twtr:word>
           </twtr:ProperNoun>
         </twtr:contains>
-        <twtr:mentions>
-          <twtr:Object>
-            <twtr:text>my new Eastpak</twtr:text>
-          </twtr:Object>
-        </twtr:mentions>
-        <twtr:mentions>
-          <twtr:Verb>
-            <twtr:text>like</twtr:text>
-          </twtr:Verb>
-        </twtr:mentions>
-        <twtr:mentions>
-          <twtr:Subject>
-            <twtr:text>I</twtr:text>
-          </twtr:Subject>
-        </twtr:mentions>
-        <twtr:tweetText>I like my new Eastpak very much!</twtr:tweetText>
-        <twtr:tweetID>807720856856109056</twtr:tweetID>
+        <twtr:contains>
+          <twtr:ProperNoun>
+            <twtr:word>cloud</twtr:word>
+          </twtr:ProperNoun>
+        </twtr:contains>
+        <twtr:contains>
+          <twtr:ProperNoun>
+            <twtr:word>IoT</twtr:word>
+          </twtr:ProperNoun>
+        </twtr:contains>
+        <twtr:contains>
+          <twtr:ProperNoun>
+            <twtr:word>Ignite</twtr:word>
+          </twtr:ProperNoun>
+        </twtr:contains>
+        <twtr:contains>
+          <twtr:ProperNoun>
+            <twtr:word>Microsoft</twtr:word>
+          </twtr:ProperNoun>
+        </twtr:contains>
+        <twtr:contains>
+          <twtr:Triplet>
+            <twtr:has>
+              <twtr:Object>
+                <twtr:is rdf:resource="http://example.org/CommonNoun"/>
+                <twtr:word>computing</twtr:word>
+              </twtr:Object>
+            </twtr:has>
+            <twtr:has>
+              <twtr:Verb>
+                <twtr:word>changing</twtr:word>
+              </twtr:Verb>
+            </twtr:has>
+            <twtr:has>
+              <twtr:Subject>
+                <twtr:is rdf:resource="http://example.org/CommonNoun"/>
+                <twtr:word>algorithms</twtr:word>
+              </twtr:Subject>
+            </twtr:has>
+          </twtr:Triplet>
+        </twtr:contains>
+        <twtr:tweetText>Microsoft Ignite: How algorithms, the cloud, IoT and data are changing computing https://t.co/klbOZM6aCm</twtr:tweetText>
+        <twtr:tweetID>781935565872693248</twtr:tweetID>
       </twtr:Tweet>
     </twtr:tweeted>
-    <twtr:userDescription>donate to my paypal #overdraft# Seattle</twtr:userDescription>
+    <twtr:isEntity>
+      <twtr:Person/>
+    </twtr:isEntity>
+    <twtr:userDescription>★Columnist★Entrepreneur★Microsoft MVP★VMware vExpert★Author★Oracle Ace★Speaker★Virtualization Nut★Blog: http://michaelcorey.com/</twtr:userDescription>
     <twtr:followerCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >285</twtr:followerCount>
-    <twtr:userID>118569851</twtr:userID>
-    <twtr:userName>OD Hanz Moleman</twtr:userName>
+    >2445</twtr:followerCount>
+    <twtr:userID>14968996</twtr:userID>
+    <twtr:userName>Michael Corey</twtr:userName>
   </twtr:TwitterAccount>
 ```
 
 #### Beispielabfrage
 Mittels der SPARQL-Anfragesprache lassen sich nun die Daten abfragen. 
 
-In diesem Fall lassen wir uns alle Tweets anzeigen, deren Proper Noun eine Organisation ist.
+In diesem Fall lassen wir uns alle Tweets anzeigen, die ein vollständiges Triplet beinhalten.
 
 ```sparql
 PREFIX  twtr: <http://www.example.com>
 
-SELECT  ?author ?tweetText ?propNounText
+SELECT  ?author ?tweetText ?subjWord ?verbWord ?objWord
 WHERE
   { ?account  a                     twtr:TwitterAccount ;
               twtr:userName         ?author ;
               twtr:tweeted          ?tweet .
     ?tweet    twtr:tweetText        ?tweetText ;
-              twtr:contains         ?propn .
-    ?propn    a                     twtr:ProperNoun ;
-              twtr:isA              twtr:Organisation ;
-              twtr:word             ?propNounText
+              twtr:contains         ?triplet .
+    ?triplet  a                     twtr:Triplet ;
+              twtr:has              ?subj ;
+              twtr:has              ?verb ;
+              twtr:has              ?obj .
+    ?subj     a                     twtr:Subject ;
+              twtr:word             ?subjWord .
+    ?verb     a                     twtr:Verb ;
+              twtr:word             ?verbWord .
+    ?obj      a                     twtr:Object ;
+              twtr:word             ?objWord
   }
 ```
 
 #### Rückgabe
 ```
-| author            | tweetText                          | propNounText |
-|-------------------|------------------------------------|--------------|
-| "OD Hanz Moleman" | "I like my new Eastpak very much!" | "Eastpak"    |
+| author          | tweetText                                                                                                  | subjWord     | verbWord   | objWord     |
+|-----------------|------------------------------------------------------------------------------------------------------------|--------------|------------|-------------|
+| "Michael Corey" | "Microsoft Ignite: How algorithms, the cloud, IoT and data are changing computing https://t.co/klbOZM6aCm" | "algorithms" | "changing" | "computing" |
 ```
 
 ## Zusätzliche Informationen
@@ -92,11 +127,27 @@ Derzeit sind für diesen Zweck zwei verschiedene Varianten von Taggern eingebaut
 
 Um den Watson Tagger zu nutzen, werden entsprechende IBM Watson Cloud Credentials mit aktivierter Natural Language Understanding API benötigt. Die Zugangsdaten müssen dann in den `bluemix.properties` hinterlegt werden.
 
-#### Keywords
-(Keyword-Extraction ...)
+#### POS-Tagging
+
+Neben dem Subjekt-Verb-Objekt Tagging wird außerdem noch die Wortart ermittelt. Derzeit werden folgende Wortarten hinterlegt:
+
+* Common Nouns
+* Proper Nouns
+* Adjektive
+
+Dazu wird derzeit Stanford NLP verwendet.
 
 #### Kategorisierung von Eigennamen 
-Derzeit wird dem Tweet das relevanteste Proper Noun hinterlegt. Dazu wird die IBM Watson Natural Language Understanding API abgefragt.
+Bei der Kategorisierung von Eigennamen wird der Autor und die Proper Nouns einer der folgenden drei Kategorien zugeordnet:
+
+* Person
+* Organization
+* Place
+
+Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Entity Recognition (NER) API. Zusätzlich soll noch eine Anbindung an die Watson NLU API erfolgen.
+
+#### Keywords
+(Keyword-Extraction ...)
 
 ## Tasks:
 

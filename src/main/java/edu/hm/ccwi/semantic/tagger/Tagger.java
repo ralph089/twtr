@@ -1,71 +1,47 @@
 package edu.hm.ccwi.semantic.tagger;
 
-import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalLanguageUnderstanding;
-import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.*;
-import edu.hm.ccwi.semantic.commons.twitter.Entity;
-import edu.hm.ccwi.semantic.commons.twitter.TaggedTweet;
+import edu.hm.ccwi.semantic.commons.twitter.Tweet;
 import edu.hm.ccwi.semantic.commons.twitter.TwitterUser;
 import edu.hm.ccwi.semantic.parser.RelationalEntry;
+import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
+import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
+import edu.hm.ccwi.semantic.tagger.ner.NERTagger;
+import edu.hm.ccwi.semantic.tagger.triplet.TripletTagger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Properties;
 
 
 /**
  * The abstract base class of a Tweet Tagger.
- * <p>
- * Uses the IBM Natural Language Understanding API for Named Entity Recognition.
  *
  * @author Ralph Offinger
  */
 public abstract class Tagger {
 
-    private NaturalLanguageUnderstanding service = null;
-    private Features features = null;
+    /**
+     * The Logger.
+     */
+    final Logger logger = LoggerFactory.getLogger(Tagger.class);
+    /**
+     * The Triplet tagger.
+     */
+    TripletTagger tripletTagger;
+    /**
+     * The Ner tagger.
+     */
+    NERTagger nerTagger;
 
     /**
-     * Instantiates a new Tagger.
+     * Instantiates a new Triplet tagger.
      *
-     * @param limit the limit
+     * @param tripletTagger the triplet tagger
+     * @param nerTagger     the ner tagger
      */
-    public Tagger(int limit) {
-        Properties prop = new Properties();
-
-        try {
-            prop.load(this.getClass().getClassLoader().getResourceAsStream("cred/bluemix.properties"));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        this.service = new NaturalLanguageUnderstanding(
-                NaturalLanguageUnderstanding.VERSION_DATE_2017_02_27,
-                prop.getProperty("username"),
-                prop.getProperty("password")
-        );
-
-
-        SemanticRolesOptions options = new SemanticRolesOptions.Builder()
-                .limit(limit)
-                .keywords(false)
-                .build();
-
-        EntitiesOptions entitiesOptions = new EntitiesOptions.Builder()
-                .limit(2)
-                .build();
-
-        KeywordsOptions keywordsOptions = new KeywordsOptions.Builder()
-                .limit(2)
-                .build();
-
-        this.features = new Features.Builder()
-                .semanticRoles(options)
-                .entities(entitiesOptions)
-                .keywords(keywordsOptions)
-                .build();
+    Tagger(TripletTagger tripletTagger, NERTagger nerTagger) {
+        this.tripletTagger = tripletTagger;
+        this.nerTagger = nerTagger;
     }
 
     /**
@@ -76,72 +52,28 @@ public abstract class Tagger {
      */
     public TaggedTweet tagTweet(RelationalEntry entry) {
 
-        TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription());
-        HashMap<String, Triplet> tripletMap = new HashMap<>();
+        TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription(), tagEntity(entry.getUsername()));
+        Tweet tweet = new Tweet(entry.getTweet_id(), twitterUser, entry.getTweetText());
 
-        AnalysisResults results = getResults(entry);
+        List<TaggedSentence> taggedSentences = tagTwitterText(entry);
 
-        try {
-            return new TaggedTweet(
-                    entry.getTweet_id(),
-                    twitterUser,
-                    entry.getTweetText(),
-                    tagSemantics(entry, results),
-                    this.getClass().getSimpleName(),
-                    getProperNoun(results),
-                    getCommonNouns(results));
-        } catch (IllegalArgumentException e) {
-            return null;
-        }
+        return new TaggedTweet(tweet, taggedSentences);
     }
 
     /**
-     * Tag semantics hash map.
+     * Tag twitter text list.
      *
-     * @param entry   the entry
-     * @param results the results
-     * @return the hash map
+     * @param entry the entry
+     * @return the list
      */
-    protected abstract HashMap<String, Triplet> tagSemantics(RelationalEntry entry, AnalysisResults results);
+    protected abstract List<TaggedSentence> tagTwitterText(RelationalEntry entry);
 
-    private AnalysisResults getResults(RelationalEntry entry) {
-        AnalyzeOptions parameters =
-                new AnalyzeOptions
-                        .Builder()
-                        .text(entry.getTweetText())
-                        .features(features)
-                        .returnAnalyzedText(true)
-                        .build();
+    /**
+     * Tags the entity.
+     *
+     * @param entityName the name of the entity
+     * @return the entity
+     */
+    protected abstract String tagEntity(String entityName);
 
-        return service.analyze(parameters).execute();
-    }
-
-    private List<String> getCommonNouns(AnalysisResults results) {
-        List<String> commonNounList = new ArrayList<>();
-        if (results.getKeywords() != null) {
-            for (KeywordsResult keyword : results.getKeywords()) {
-                commonNounList.add(keyword.getText());
-            }
-        }
-        return commonNounList;
-    }
-
-    private Entity getProperNoun(AnalysisResults results) {
-        EntitiesResult most_relevant_entity = null;
-        if (results.getEntities() != null) {
-            for (EntitiesResult entity : results.getEntities()) {
-                if (most_relevant_entity == null) {
-                    most_relevant_entity = entity;
-                } else {
-                    if (entity.getRelevance() > most_relevant_entity.getRelevance()) {
-                        most_relevant_entity = entity;
-                    }
-                }
-            }
-            if (most_relevant_entity != null) {
-                return new Entity(most_relevant_entity.getText(), most_relevant_entity.getType());
-            }
-        }
-        return null;
-    }
 }

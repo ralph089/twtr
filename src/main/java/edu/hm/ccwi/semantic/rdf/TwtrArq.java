@@ -22,61 +22,65 @@ public class TwtrArq {
     }
 
     /**
-     * Prints all Subjects, Verbs, and Objects of a Tweet.
+     * Prints all Subjects which are a Common Noun.
      */
-    public void printSemantics() {
+    public void printSubjectCommonNouns() {
 
         String queryString = String.join(System.getProperty("line.separator"),
                 String.format("PREFIX twtr: <%s>", TWTR.getURI()),
-                "SELECT ?author ?tweetText ?subjText ?verbText ?objText",
+                "SELECT ?author ?tweetText ?subjWord",
                 "WHERE",
                 "{",
-                "?subject a twtr:TwitterAccount .",
-                "?subject twtr:userName ?author .",
-                "?subject twtr:tweeted ?tweet .",
+                "?account a twtr:TwitterAccount .",
+                "?account twtr:userName ?author .",
+                "?account twtr:tweeted ?tweet .",
 
                 "?tweet twtr:tweetText ?tweetText .",
-                "?tweet twtr:mentions ?s .",
-                "?tweet twtr:mentions ?v .",
-                "?tweet twtr:mentions ?o .",
+                "?tweet twtr:contains ?triplet .",
 
-                "?s a twtr:Subject .",
-                "?s twtr:text ?subjText .",
+                "?triplet a twtr:Triplet .",
+                "?triplet twtr:has ?subj.",
 
-                "?v a twtr:Verb .",
-                "?v twtr:text ?verbText .",
-
-                "?o a twtr:Object .",
-                "?o twtr:text ?objText .",
+                "?subj a twtr:Subject .",
+                "?subj twtr:is twtr:CommonNoun .",
+                "?subj twtr:word ?subjWord .",
                 "}"
         );
-
 
 
         printQueryResults(queryString);
     }
 
     /**
-     * Prints all Tweets with a Proper Noun.
+     * Prints all Tweets with a Subject, Verb, Object-Triple.
      */
-    public void printTweetsWithProperNoun() {
+    public void printTweetsWithTriplet() {
 
         String queryString = String.join(System.getProperty("line.separator"),
                 String.format("PREFIX twtr: <%s>", TWTR.getURI()),
-                "SELECT ?author ?tweetText ?propNounText",
+                "SELECT ?author ?tweetText ?subjWord ?verbWord ?objWord",
                 "WHERE",
                 "{",
-                "?subject a twtr:TwitterAccount .",
-                "?subject twtr:userName ?author .",
-                "?subject twtr:tweeted ?tweet .",
+                "?account a twtr:TwitterAccount .",
+                "?account twtr:userName ?author .",
+                "?account twtr:tweeted ?tweet .",
 
                 "?tweet twtr:tweetText ?tweetText .",
+                "?tweet twtr:contains ?triplet .",
 
-                "?tweet twtr:contains ?propn .",
+                "?triplet a twtr:Triplet .",
+                "?triplet twtr:has ?subj.",
+                "?triplet twtr:has ?verb.",
+                "?triplet twtr:has ?obj.",
 
-                "?propn a twtr:ProperNoun .",
-                "?propn twtr:isA twtr:Organisation .",
-                "?propn twtr:word ?propNounText .",
+                "?subj a twtr:Subject .",
+                "?subj twtr:word ?subjWord .",
+
+                "?verb a twtr:Verb .",
+                "?verb twtr:word ?verbWord .",
+
+                "?obj a twtr:Object .",
+                "?obj twtr:word ?objWord .",
                 "}"
         );
 

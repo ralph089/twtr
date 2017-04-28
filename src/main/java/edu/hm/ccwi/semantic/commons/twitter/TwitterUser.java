@@ -14,6 +14,7 @@ public class TwitterUser {
     private final String userID;
     private final String userName;
     private final String userDescription;
+    private final String type;
 
     /**
      * Instantiates a new Twitter user.
@@ -22,12 +23,23 @@ public class TwitterUser {
      * @param userID          the user id
      * @param userName        the user name
      * @param userDescription the user description
+     * @param type            the type
      */
-    public TwitterUser(int followerCount, String userID, String userName, String userDescription) {
+    public TwitterUser(int followerCount, String userID, String userName, String userDescription, String type) {
         this.followerCount = Validate.notNull(followerCount, "Empty Follower Count is not allowed!");
         this.userID = Validate.notNull(userID, "Empty User ID ist not allowed!");
         this.userName = Validate.notNull(userName, "Empty Username is not allowed!");
         this.userDescription = userDescription;
+        this.type = type;
+    }
+
+    /**
+     * Gets type.
+     *
+     * @return the type
+     */
+    public String getType() {
+        return type;
     }
 
     /**
