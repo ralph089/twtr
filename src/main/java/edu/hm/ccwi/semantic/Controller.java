@@ -55,7 +55,7 @@ public class Controller {
                     TaggedTweet taggedTweet = tagger.tagTweet(entry);
                     if (taggedTweet != null) {
                         twitterModel.addTweet(taggedTweet);
-                        taggedTweet.toCSV("src/main/resources/tweets/OpenIE_Triplet_Tagger.csv");
+                        taggedTweet.toCSV("src/main/resources/tweets/Stanford_Triplet_Tagger.csv");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
