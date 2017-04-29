@@ -22,9 +22,9 @@ public class Tweet {
      * @param tweetText   the tweet text
      */
     public Tweet(String tweetID, TwitterUser twitterUser, String tweetText) {
-        this.tweetID = Validate.notNull(tweetID, "Empty Tweet ID ist not allowed!");
+        this.tweetID = Validate.notEmpty(tweetID, "Empty Tweet ID ist not allowed!");
         this.twitterUser = Validate.notNull(twitterUser, "Empty Twitter User not allowed!");
-        this.tweetText = Validate.notNull(tweetText, "Empty Text not allowed!");
+        this.tweetText = Validate.notEmpty(tweetText, "Empty Text not allowed!");
     }
 
     /**

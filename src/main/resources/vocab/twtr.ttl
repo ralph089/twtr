@@ -42,11 +42,6 @@ twtr:Place
   rdfs:subClassOf twtr:Entity ;
   rdfs:label "Place" .
 
-twtr:isEntity
-  rdf:type    rdf:Property , owl:ObjectProperty ;
-  rdfs:isDefinedBy twtr: ;
-  rdfs:range twtr:Entity .
-
 ### A Twitter Account tweeted a Tweet.
 
 twtr:TwitterAccount
@@ -117,10 +112,10 @@ twtr:has
   rdfs:range twtr:SVO .
 
 twtr:SVO
-rdf:type owl:Class , rdfs:Class ;
-rdfs:comment "SVO-Triplet." ;
-rdfs:isDefinedBy twtr: ;
-rdfs:label "SVO" .
+  rdf:type owl:Class , rdfs:Class ;
+  rdfs:comment "SVO-Triplet." ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "SVO" .
 
 twtr:Subject
   rdf:type owl:Class , rdfs:Class ;
@@ -171,9 +166,6 @@ twtr:word
   rdfs:label "word" ;
   rdfs:domain twtr:Elements ;
   rdfs:range rdfs:Literal .
-
-
-
 
 ### Twitter Account Properties
 

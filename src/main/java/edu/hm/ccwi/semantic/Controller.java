@@ -8,7 +8,6 @@ import edu.hm.ccwi.semantic.tagger.StanfordTagger;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.ner.StanfordNER;
 import edu.hm.ccwi.semantic.tagger.triplet.StanfordTripletTagger;
-import edu.hm.ccwi.semantic.tagger.triplet.WatsonTripletTagger;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -56,7 +55,7 @@ public class Controller {
                     TaggedTweet taggedTweet = tagger.tagTweet(entry);
                     if (taggedTweet != null) {
                         twitterModel.addTweet(taggedTweet);
-                        taggedTweet.toCSV("src/main/resources/tweets/Stanford_Triplet_Tagger.csv");
+                        taggedTweet.toCSV("src/main/resources/tweets/OpenIE_Triplet_Tagger.csv");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -61,4 +61,24 @@ public class Triplet<S, V, O> {
     public String toString() {
         return String.format("Subjekt: %s, Verb: %s, Objekt: %s", subject, verb, object);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Triplet<?, ?, ?> triplet = (Triplet<?, ?, ?>) o;
+
+        if (!subject.equals(triplet.subject)) return false;
+        if (!verb.equals(triplet.verb)) return false;
+        return object.equals(triplet.object);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = subject.hashCode();
+        result = 31 * result + verb.hashCode();
+        result = 31 * result + object.hashCode();
+        return result;
+    }
 }

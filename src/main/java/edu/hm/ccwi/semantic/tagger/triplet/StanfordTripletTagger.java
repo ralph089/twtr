@@ -10,8 +10,6 @@ import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.util.CoreMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,13 +17,14 @@ import java.util.List;
 
 /**
  * Extracts {@link Triplet} with Stanford-NLP.
+ * <p>
+ * Doesn't work with Stanford NLP > 3.3.1
  *
  * @author Max Auch, Ralph Offinger
  */
 public class StanfordTripletTagger extends TripletTagger {
 
     private final StanfordCoreNLP pipeline;
-    private final Logger logger = LoggerFactory.getLogger(StanfordTripletTagger.class);
 
     /**
      * Instantiates a new Stanford triplet tagger.
@@ -36,7 +35,7 @@ public class StanfordTripletTagger extends TripletTagger {
     }
 
     @Override
-    public List<Triplet<Subj, Verb, Obj>> tagSemantics(String tweetText) {
+    public List<Triplet<Subj, Verb, Obj>> tagTriplet(String tweetText) {
         Annotation document = new Annotation(tweetText);
         pipeline.annotate(document);
 
@@ -93,6 +92,11 @@ public class StanfordTripletTagger extends TripletTagger {
                             if (td3.reln().equals(EnglishGrammaticalRelations.PHRASAL_VERB_PARTICLE)
                                     && td1.gov() == td3.gov()) {
                                 tripleFound = true;
+                                logger.info(String.format("Found Triplet: Subject: %s, Verb (relation): %s, Object: %s",
+                                        td1.dep().value(),
+                                        td2.gov().value() + " " + td3.dep().value(),
+                                        td2.dep().value()));
+
                                 tripletList.add(new Triplet<Subj, Verb, Obj>(
                                         new Subj(td1.dep().value()),
                                         new Verb(td2.gov().value() + " " + td3.dep().value()),
@@ -100,6 +104,11 @@ public class StanfordTripletTagger extends TripletTagger {
                             }
                         }
                         if (!tripleFound) {
+                            logger.info(String.format("Found Triplet: Subject: %s, Verb (relation): %s, Object: %s",
+                                    td1.dep().value(),
+                                    td2.gov().value(),
+                                    td2.dep().value()));
+
                             tripletList.add(new Triplet<Subj, Verb, Obj>(
                                     new Subj(td1.dep().value()),
                                     new Verb(td2.gov().value()),

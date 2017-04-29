@@ -180,26 +180,18 @@ public class TwtrModel {
     }
 
     private void createEntity(Resource res, String type) {
-        Resource entity = null;
-        if (type != null) {
+        if (type != null && res != null) {
             switch (type) {
                 case "PERSON":
-                    entity = model.createResource()
-                            .addProperty(RDF.type, TWTR.Person);
+                    res.addProperty(RDF.type, TWTR.Person);
                     break;
                 case "ORGANIZATION":
-                    entity = model.createResource()
-                            .addProperty(RDF.type, TWTR.Organisation);
+                    res.addProperty(RDF.type, TWTR.Organisation);
                     break;
                 case "LOCATION":
-                    entity = model.createResource()
-                            .addProperty(RDF.type, TWTR.Place);
+                    res.addProperty(RDF.type, TWTR.Place);
                     break;
             }
-        }
-
-        if (entity != null) {
-            res.addProperty(TWTR.isEntity, entity);
         }
     }
 }

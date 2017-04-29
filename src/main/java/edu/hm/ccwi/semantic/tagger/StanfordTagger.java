@@ -1,5 +1,6 @@
 package edu.hm.ccwi.semantic.tagger;
 
+import edu.hm.ccwi.semantic.commons.utils.TweetTextFilter;
 import edu.hm.ccwi.semantic.parser.RelationalEntry;
 import edu.hm.ccwi.semantic.tagger.models.ProperNoun;
 import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
@@ -13,12 +14,10 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
-import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.util.CoreMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 
@@ -49,12 +48,13 @@ public class StanfordTagger extends Tagger {
     }
 
     @Override
-    protected List<TaggedSentence> tagTwitterText(RelationalEntry entry) {
+    protected List<TaggedSentence> tagSentences(RelationalEntry entry) {
 
-        List<TaggedSentence> posTaggedSentences = new ArrayList<TaggedSentence>();
+        List<TaggedSentence> posTaggedSentences = new ArrayList<>();
+        String text = TweetTextFilter.clearTweet(entry.getTweetText());
+        logger.info(String.format("Filtered Tweet to: %s", text));
 
-        Annotation document = new Annotation(entry.getTweetText());
-
+        Annotation document = new Annotation(text);
         pipeline.annotate(document);
 
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
@@ -63,26 +63,17 @@ public class StanfordTagger extends Tagger {
 
             logger.debug(String.format("Analyzing sentence: ", sentence.toString()));
 
-            Tree t = sentence.get(TreeCoreAnnotations.TreeAnnotation.class);
-            TreebankLanguagePack languagePack = new PennTreebankLanguagePack();
-            GrammaticalStructure structure = languagePack.grammaticalStructureFactory().newGrammaticalStructure(t);
-            Collection<TypedDependency> typedDependencies = structure.typedDependenciesCollapsed();
-
             // Part of Speech
             ArrayList<String> properNounList = new ArrayList<String>();
             ArrayList<String> nounList = new ArrayList<String>();
             ArrayList<String> adjectiveList = new ArrayList<String>();
 
-            // Finds all nouns, proper nouns and adjectiveList in the sentence.
+            // Finds all nouns, proper nouns and adjective in the sentence.
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 // this is the text of the token
                 String word = token.get(CoreAnnotations.TextAnnotation.class);
-                // this is the POS tag of the token
+                // this is the POS tagSentences of the token
                 String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
-                // this is the NER label of the token
-                String ne = token.get(CoreAnnotations.NamedEntityTagAnnotation.class);
-
-                logger.debug(String.format("Found token: %s, word: %s, ne: %s", word, pos, ne));
 
                 if (!isHashTagOrMention(word)) {
                     if (PROPERNOUN_TYPE.contains(pos) && !properNounList.contains(word)) {
@@ -95,7 +86,7 @@ public class StanfordTagger extends Tagger {
                 }
             }
 
-            List<Triplet<Subj, Verb, Obj>> tripletList = tripletTagger.tagSemantics(entry);
+            List<Triplet<Subj, Verb, Obj>> tripletList = tripletTagger.tagTriplet(sentence.toString());
 
             for (Triplet triplet : tripletList) {
 
@@ -129,7 +120,7 @@ public class StanfordTagger extends Tagger {
             }
 
             ArrayList<ProperNoun> unrelatedProperNounList = new ArrayList<>();
-            for(String properNoun : properNounList) {
+            for (String properNoun : properNounList) {
                 unrelatedProperNounList.add(new ProperNoun(properNoun, tagEntity(properNoun)));
             }
 
@@ -143,7 +134,7 @@ public class StanfordTagger extends Tagger {
     @Override
     protected String tagEntity(String entityName) {
         String category = nerTagger.identifyNER(entityName);
-        logger.info(entityName + ": Category: " + category);
+        logger.debug("NER: " + entityName + ": Category: " + category);
         return category;
     }
 

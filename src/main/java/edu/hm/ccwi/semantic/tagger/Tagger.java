@@ -55,7 +55,7 @@ public abstract class Tagger {
         TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription(), tagEntity(entry.getUsername()));
         Tweet tweet = new Tweet(entry.getTweet_id(), twitterUser, entry.getTweetText());
 
-        List<TaggedSentence> taggedSentences = tagTwitterText(entry);
+        List<TaggedSentence> taggedSentences = tagSentences(entry);
 
         return new TaggedTweet(tweet, taggedSentences);
     }
@@ -66,7 +66,7 @@ public abstract class Tagger {
      * @param entry the entry
      * @return the list
      */
-    protected abstract List<TaggedSentence> tagTwitterText(RelationalEntry entry);
+    protected abstract List<TaggedSentence> tagSentences(RelationalEntry entry);
 
     /**
      * Tags the entity.

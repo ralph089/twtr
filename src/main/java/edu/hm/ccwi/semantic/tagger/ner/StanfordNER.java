@@ -23,7 +23,7 @@ public class StanfordNER extends NERTagger {
      * Instantiates a new Stanford ner.
      */
     public StanfordNER() {
-        String serializedClassifier = "nlp/english.all.3class.distsim.crf.ser.gz";
+        String serializedClassifier = "nlp/english_14.all.3class.distsim.crf.ser.gz";
         classifier = CRFClassifier.getClassifierNoExceptions(serializedClassifier);
     }
 
@@ -38,7 +38,7 @@ public class StanfordNER extends NERTagger {
                 }
             }
         }
-        return null;
+        return "";
     }
 }
 

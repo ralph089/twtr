@@ -29,8 +29,8 @@ public class TwitterUser {
         this.followerCount = Validate.notNull(followerCount, "Empty Follower Count is not allowed!");
         this.userID = Validate.notNull(userID, "Empty User ID ist not allowed!");
         this.userName = Validate.notNull(userName, "Empty Username is not allowed!");
-        this.userDescription = userDescription;
-        this.type = type;
+        this.userDescription = Validate.notNull(userDescription);
+        this.type = Validate.notNull(type);
     }
 
     /**

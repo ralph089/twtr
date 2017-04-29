@@ -223,7 +223,11 @@ public class RelationalEntry {
      * @return the user description
      */
     public String getUserDescription() {
-        return userDescription;
+        if(userDescription == null) {
+            return "";
+        } else {
+            return userDescription;
+        }
     }
 
     /**

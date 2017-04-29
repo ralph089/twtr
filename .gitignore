@@ -155,3 +155,4 @@ src/main/java/edu/hm/ccwi/semantic/rdf/model/
 !/src/main/resources/tweets/taggedTweets.csv
 /src/main/resources/cred/bluemix.properties
 /src/main/resources/tweets/twitter_IoT_pared_100000.csv
+!/src/main/java/edu/hm/ccwi/semantic/tagger/triplet/WatsonTripletTagger.java

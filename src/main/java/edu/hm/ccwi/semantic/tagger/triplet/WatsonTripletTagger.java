@@ -30,19 +30,24 @@ public class WatsonTripletTagger extends TripletTagger {
     }
 
     @Override
-    public List<Triplet<Subj, Verb, Obj>> tagSemantics(String tweetText) {
+    public List<Triplet<Subj, Verb, Obj>> tagTriplet(String tweetText) {
         AnalysisResults results = getNLUResults(tweetText);
 
         ArrayList<Triplet<Subj, Verb, Obj>> semantics = new ArrayList<>();
 
         for (SemanticRolesResult result : results.getSemanticRoles()) {
 
-            // Only fill semantics, when all semantics have been recognized.
+            // Only fill triplet, when all semantics have been recognized.
             if (result.getSubject() != null && result.getAction() != null && result.getObject() != null) {
 
                 Subj subject = new Subj(result.getSubject().getText());
                 Verb verb = new Verb(result.getAction().getText());
                 Obj object = new Obj(result.getObject().getText());
+
+                logger.info(String.format("Found Triplet: Subject: %s, Verb (action): %s, Object: %s",
+                        subject,
+                        verb,
+                        object));
 
                 Triplet<Subj, Verb, Obj> triplet = new Triplet<>(subject, verb, object);
                 semantics.add(triplet);
@@ -57,7 +62,7 @@ public class WatsonTripletTagger extends TripletTagger {
      * @param tweetText the tweet text
      * @return the nlu results
      */
-    protected AnalysisResults getNLUResults(String tweetText) {
+    private AnalysisResults getNLUResults(String tweetText) {
         Features features;
 
         SemanticRolesOptions options = new SemanticRolesOptions.Builder()

@@ -17,7 +17,14 @@ public class StanfordNLP {
     private StanfordNLP() {
         Properties properties = new Properties();
         properties.put(ANNOTATOR, PROPERTIES);
+
+        properties.put("tokenize.language", "en");
+
+        //properties.put("openie.triple.strict", "true");
+
         properties.put("quiet", true);
+        properties.put("threads", "8");
+
         properties.put("pos.model", "nlp/gate-EN-twitter.model");
 
         pipeline = new StanfordCoreNLP(properties);
