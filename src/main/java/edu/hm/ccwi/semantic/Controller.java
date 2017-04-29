@@ -7,7 +7,7 @@ import edu.hm.ccwi.semantic.rdf.TwtrModel;
 import edu.hm.ccwi.semantic.tagger.StanfordTagger;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.ner.StanfordNER;
-import edu.hm.ccwi.semantic.tagger.triplet.StanfordTripletTagger;
+import edu.hm.ccwi.semantic.tagger.triplet.OpenIETripletTagger;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -42,7 +42,7 @@ public class Controller {
                 .parseRelationalExportedData("src/main/resources/tweets/twitter_IoT_pared_short.csv");
 
         // #2 nlp on data
-        List<StanfordTagger> taggers = Arrays.asList(new StanfordTagger(new StanfordTripletTagger(), new StanfordNER()));
+        List<StanfordTagger> taggers = Arrays.asList(new StanfordTagger(new OpenIETripletTagger(), new StanfordNER()));
 
         TwtrModel twitterModel = new TwtrModel();
         TwtrArq twtrArq = new TwtrArq(twitterModel);

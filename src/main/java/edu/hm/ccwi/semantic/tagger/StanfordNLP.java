@@ -10,7 +10,7 @@ import java.util.Properties;
 public class StanfordNLP {
 
     private static final String ANNOTATOR = "annotators";
-    private static final String PROPERTIES = "tokenize, ssplit, pos, lemma, ner, parse, dcoref";
+    private static final String PROPERTIES = "tokenize, ssplit, pos, lemma, ner, parse, dcoref, natlog, openie";
     private static StanfordNLP instance;
     private final StanfordCoreNLP pipeline;
 

@@ -44,14 +44,12 @@ public class TweetTextFilter {
             if (text.charAt(text.length() - 1) != '.') {
                 text = (text + ".");
             }
-        } else {
-            logger.warn(String.format("Text hat Länge 0: %s", text));
         }
         return text;
     }
 
     public static String removeReTweet(String text){
-        text = text.replaceAll("(RT|retweet|from|via) .\\S+:", "");
+        text = text.replaceAll("(RT|retweet|retweeted|from|via) .\\S+:", "");
         return text;
     }
 

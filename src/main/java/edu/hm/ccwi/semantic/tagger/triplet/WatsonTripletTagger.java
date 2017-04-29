@@ -12,9 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The IBM Watson Triplet Tagger.
+ * Extracts {@link Triplet} with IBM Watson NLU.
  * <p>
- * Uses the Natural Language Understanding API for extracting subject, verb and object.
+ * Uses the Natural Language Understanding (NLU) API for extracting subject, verb and object.
  *
  * @author Ralph Offinger
  */

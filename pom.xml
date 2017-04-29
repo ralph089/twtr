@@ -11,19 +11,16 @@
     <url>http://maven.apache.org</url>
 
     <properties>
-
         <jena.version>3.2.0</jena.version>
         <slf4j.version>1.7.25</slf4j.version>
-        <log4j.version>1.2.17</log4j.version>
         <poi.version>3.12</poi.version>
         <junit.version>4.11</junit.version>
         <jdk.version>1.8</jdk.version>
-        <stanford.version>3.3.1</stanford.version>
+        <stanford.version>3.7.0</stanford.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
-
         <!-- Jena -->
         <dependency>
             <groupId>org.apache.jena</groupId>
@@ -72,19 +69,16 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.7</version>
+            <version>${slf4j.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${poi.version}</version>
         </dependency>
-
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -132,12 +126,12 @@
             <version>1.1.1.RELEASE</version>
         </dependency>
 
+        <!-- Twitter Text -->
         <dependency>
             <groupId>com.twitter</groupId>
             <artifactId>twitter-text</artifactId>
-            <version>1.14.3</version> <!-- or whatever the latest version is -->
+            <version>1.14.3</version>
         </dependency>
-
     </dependencies>
 
     <build>

@@ -118,13 +118,13 @@ public class TaggedTweet {
             for (Triplet triplet : sentence.getTriplets()) {
                 sb.append(tweet.getTweetID());
                 sb.append(CSV_DELIMITER);
-                sb.append(sentence.getSentence());
+                sb.append(sentence.getSentence().replace(";",","));
                 sb.append(CSV_DELIMITER);
-                sb.append(triplet.getSubject().getWord());
+                sb.append(triplet.getSubject().getWord().replace(";",","));
                 sb.append(CSV_DELIMITER);
-                sb.append(triplet.getVerb().getWord());
+                sb.append(triplet.getVerb().getWord().replace(";",","));
                 sb.append(CSV_DELIMITER);
-                sb.append(triplet.getObject().getWord());
+                sb.append(triplet.getObject().getWord().replace(";",","));
                 sb.append('\n');
             }
         }
