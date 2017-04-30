@@ -139,18 +139,22 @@ Daraus wird mittels Jena und verschiedenen Taggern folgender RDFS-Graph erzeugt:
 #### Beispielabfrage
 Mittels der SPARQL-Anfragesprache lassen sich nun die Daten abfragen. 
 
-In diesem Fall lassen wir uns alle Proper Nouns anzeigen. Durch einen RDFS-Reasoner kann Jena schlussfolgern, dass auch Triplets Teil der Part-Of-Speech (POS)-Klasse sind, wodurch tatsächlich alle Proper Nouns im Graphen angezeigt werden.
+In diesem Fall lassen wir uns alle Proper Nouns anzeigen, die auch gleichzeitig Subjekt sind. 
+
+Durch einen RDFS-Reasoner kann Jena schlussfolgern, dass auch Triplets Teil der Part-Of-Speech (POS)-Klasse sind (siehe Graph).
+ Dadurch werden auch Proper Nouns gefunden, die nicht unmittelbar in der Part-Of-Speech Klasse sind, sondern sich in einer Subklasse (Triplets) befinden.
 
 ```sparql
 PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX  twtr: <http://www.example.com>
+PREFIX  : <http://example.org/>
 
 SELECT  ?properNoun
 WHERE
-  { ?tweet    twtr:contains         ?pos .
-    ?element  rdfs:subClassOf       ?pos ;
-              a                     twtr:ProperNoun ;
-              twtr:word             ?properNoun
+  { ?tweet    :contains         ?pos .
+    ?element  rdfs:subClassOf   ?pos ;
+              a                 :ProperNoun ;
+              a                 :Subject ;
+              :word             ?properNoun
   }
 ```
 
@@ -158,11 +162,7 @@ WHERE
 ```
 | properNoun        |
 |-------------------|
-| "socialmedia2day" |
-| "MT"              |
-| "SocialMedia"     |
 | "IoT"             |
-| "Social"          |
 ```
 
 ## Zusätzliche Informationen
