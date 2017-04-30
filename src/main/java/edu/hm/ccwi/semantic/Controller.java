@@ -34,7 +34,7 @@ public class Controller {
 
         // #1 parse relational Data
         List<RelationalEntry> twitterData = new RelationalParser()
-                .parseRelationalExportedData("src/main/resources/tweets/twitter_IoT_pared_short.csv");
+                .parseRelationalExportedData("src/main/resources/tweets/twitter_IoT_pared_1.csv");
 
         // #2 nlp on data
         List<StanfordTagger> taggers = Arrays.asList(new StanfordTagger(new OpenIETripletTagger(), new StanfordNER()));
@@ -59,8 +59,8 @@ public class Controller {
         }
         twitterModel.write(System.out);
 
-        twtrArq.printTweetsWithTriplet();
-        twtrArq.printSubjectCommonNouns();
-        twtrArq.printSubjectProperNouns();
+        //twtrArq.printTweetsWithTriplet();
+        twtrArq.printInferenceCN();
+        //twtrArq.printSubjectProperNouns();
     }
 }

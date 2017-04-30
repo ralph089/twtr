@@ -24,26 +24,17 @@ public class TwtrArq {
     /**
      * Prints all Subjects which are a Common Noun.
      */
-    public void printSubjectCommonNouns() {
+    public void printInferenceCN() {
 
         String queryString = String.join(System.getProperty("line.separator"),
                 String.format("PREFIX twtr: <%s>", TWTR.getURI()),
-                "SELECT ?author ?tweetText ?subjWord",
+                "PREFIX  rdfs:<http://www.w3.org/2000/01/rdf-schema#>",
+                "SELECT ?word",
                 "WHERE",
                 "{",
-                "?account a twtr:TwitterAccount .",
-                "?account twtr:userName ?author .",
-                "?account twtr:tweeted ?tweet .",
-
-                "?tweet twtr:tweetText ?tweetText .",
-                "?tweet twtr:contains ?triplet .",
-
-                "?triplet a twtr:Triplet .",
-                "?triplet twtr:has ?subj.",
-
-                "?subj a twtr:Subject .",
-                "?subj a twtr:CommonNoun .",
-                "?subj twtr:word ?subjWord .",
+                "?tweet twtr:contains ?pos . ",
+                "?s rdfs:subClassOf ?pos . ",
+                "?s twtr:word ?word . ",
                 "}"
         );
 

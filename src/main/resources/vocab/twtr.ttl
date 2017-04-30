@@ -72,48 +72,28 @@ twtr:contains
   rdfs:domain twtr:Tweet ;
   rdfs:isDefinedBy twtr: ;
   rdfs:label "contains" ;
-  rdfs:range twtr:Elements .
+  rdfs:range twtr:POS .
 
 ### POS
-
-twtr:Elements
-  rdf:type owl:Class , rdfs:Class ;
-  rdfs:comment "Elements." ;
-  rdfs:isDefinedBy twtr: ;
-  rdfs:label "Elements" .
 
 twtr:POS
   rdf:type owl:Class , rdfs:Class ;
   rdfs:comment "POS." ;
   rdfs:isDefinedBy twtr: ;
-  rdfs:subClassOf twtr:Elements ;
   rdfs:label "POS" .
 
 twtr:Triplet
   rdf:type owl:Class , rdfs:Class ;
   rdfs:comment "SVO-Triplet." ;
   rdfs:isDefinedBy twtr: ;
-  rdfs:subClassOf twtr:Elements ;
+  rdfs:subClassOf twtr:POS ;
   rdfs:label "Triplet" .
-
-twtr:has
-  rdf:type    rdf:Property , owl:ObjectProperty ;
-  rdfs:domain twtr:Triplet ;
-  rdfs:isDefinedBy twtr: ;
-  rdfs:label "has" ;
-  rdfs:range twtr:SVO .
-
-twtr:SVO
-  rdf:type owl:Class , rdfs:Class ;
-  rdfs:comment "SVO-Triplet." ;
-  rdfs:isDefinedBy twtr: ;
-  rdfs:label "SVO" .
 
 twtr:Subject
   rdf:type owl:Class , rdfs:Class ;
   rdfs:comment "The relation between a phrase and a verb in a tweet, that represents the person or thing that performs the action or about which something is stated." ;
   rdfs:isDefinedBy twtr: ;
-  rdfs:subClassOf twtr:SVO ;
+  rdfs:subClassOf twtr:Triplet ;
   rdfs:label "Subject" .
 
 twtr:Verb
@@ -121,13 +101,13 @@ twtr:Verb
   rdfs:comment "A verb signals an action, an occurrence, or a state of being." ;
   rdfs:isDefinedBy twtr: ;
   rdfs:label "Verb" ;
-  rdfs:subClassOf twtr:SVO .
+  rdfs:subClassOf twtr:Triplet .
 
 twtr:Object
   rdf:type owl:Class , rdfs:Class ;
   rdfs:comment "The relation between a phrase and a verb in a tweet, in which the relation is central to the verb." ;
   rdfs:isDefinedBy twtr: ;
-  rdfs:subClassOf twtr:SVO ;
+  rdfs:subClassOf twtr:Triplet ;
   rdfs:label "Object" .
 
 twtr:CommonNoun

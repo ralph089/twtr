@@ -5,11 +5,13 @@ import edu.hm.ccwi.semantic.tagger.models.ProperNoun;
 import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
+import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.ReasonerRegistry;
+import org.apache.jena.reasoner.rulesys.RDFSRuleReasonerFactory;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import org.apache.jena.vocabulary.ReasonerVocabulary;
 import org.apache.jena.vocabulary.XSD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,49 +53,70 @@ public class TwtrModel {
      */
     public void addTweet(TaggedTweet taggedTweet) {
 
-        // TwitterAccount tweeted Tweet
+        // Begin TwitterAccount tweeted Tweet
         Resource twitterAccount = createTwitterAccount(taggedTweet);
 
         Resource tweet = createTweet(taggedTweet);
 
-        twitterAccount.addProperty(TWTR.tweeted, tweet);
+        Property tweeted = TWTR.tweeted;
+        tweeted.addProperty(RDFS.domain, twitterAccount);
+        tweeted.addProperty(RDFS.range, tweet);
 
-        // Tweet mentions a Triplet and contains Part-of-Speech
+        twitterAccount.addProperty(tweeted, tweet);
+        // End TwitterAccount tweeted Tweet
+
+        // Begin Tweet contains POS
+        Resource pos = model.createResource(TWTR.getURI() + "Tweet/" + taggedTweet.getTweet().getTweetID() + "/POS/")
+                .addProperty(RDF.type, TWTR.POS);
+
+        Property contains = TWTR.contains;
+        contains.addProperty(RDFS.domain, tweet);
+        contains.addProperty(RDFS.range, pos);
+
+        tweet.addProperty(contains, pos);
+        // End Tweet contains Elements
+
+        // Begin add Elements
 
         for (TaggedSentence sentence : taggedTweet.getTaggedSentences()) {
-            createTriplet(tweet, sentence);
-            createAdjectives(tweet, sentence);
-            createUnrelatedNouns(tweet, sentence);
+            createTriplet(tweet, sentence, pos);
+            createAdjectives(tweet, sentence, pos);
+            createUnrelatedNouns(tweet, sentence, pos);
         }
+        // End add Elements
     }
 
-    private void createUnrelatedNouns(Resource tweet, TaggedSentence sentence) {
+    private void createUnrelatedNouns(Resource tweet, TaggedSentence sentence, Resource pos) {
         for (ProperNoun pNounObj : sentence.getUnrelatedProperNouns()) {
             Resource pNoun = model.createResource()
                     .addProperty(RDF.type, TWTR.ProperNoun)
                     .addProperty(TWTR.word, pNounObj.getWord());
             createEntity(pNoun, pNounObj.getEntity());
-            tweet.addProperty(TWTR.contains, pNoun);
+
+            pNoun.addProperty(RDFS.subClassOf, pos);
         }
 
         for (String cNounStr : sentence.getUnrelatedCommonNouns()) {
             Resource cNoun = model.createResource()
                     .addProperty(RDF.type, TWTR.CommonNoun)
                     .addProperty(TWTR.word, cNounStr);
-            tweet.addProperty(TWTR.contains, cNoun);
+
+            cNoun.addProperty(RDFS.subClassOf, pos);
         }
     }
 
-    private void createTriplet(Resource tweet, TaggedSentence sentence) {
+    private void createTriplet(Resource tweet, TaggedSentence sentence, Resource pos) {
         for (Triplet triplet : sentence.getTriplets()) {
 
+            // Triplet
             Resource triple = model.createResource()
-                    .addProperty(RDF.type, TWTR.Triplet);
+                    .addProperty(RDF.type, TWTR.Triplet)
+                    .addProperty(RDFS.subClassOf, pos);
 
-            // Create Subject
             Resource subject = model.createResource()
                     .addProperty(RDF.type, TWTR.Subject)
-                    .addProperty(TWTR.word, triplet.getSubject().getWord());
+                    .addProperty(TWTR.word, triplet.getSubject().getWord())
+                    .addProperty(RDFS.subClassOf, triple);;
 
             if (triplet.getObject().isProperNoun()) {
                 subject.addProperty(RDF.type, TWTR.ProperNoun);
@@ -101,15 +124,17 @@ public class TwtrModel {
                 subject.addProperty(RDF.type, TWTR.CommonNoun);
             }
 
-            // Create Verb
+            // SVO is a Verb
             Resource verb = model.createResource()
                     .addProperty(RDF.type, TWTR.Verb)
-                    .addProperty(TWTR.word, triplet.getVerb().getWord());
+                    .addProperty(TWTR.word, triplet.getVerb().getWord())
+                    .addProperty(RDFS.subClassOf, triple);;
 
-            // Create Object
+            // SVO is a object
             Resource object = model.createResource()
                     .addProperty(RDF.type, TWTR.Object)
-                    .addProperty(TWTR.word, triplet.getObject().getWord());
+                    .addProperty(TWTR.word, triplet.getObject().getWord())
+                    .addProperty(RDFS.subClassOf, triple);;
 
             if (triplet.getObject().isProperNoun()) {
                 object.addProperty(RDF.type, TWTR.ProperNoun);
@@ -117,11 +142,6 @@ public class TwtrModel {
                 object.addProperty(RDF.type, TWTR.CommonNoun);
             }
 
-            // Create Links
-            tweet.addProperty(TWTR.contains, triple);
-            triple.addProperty(TWTR.has, subject);
-            triple.addProperty(TWTR.has, verb);
-            triple.addProperty(TWTR.has, object);
         }
     }
 
@@ -137,25 +157,28 @@ public class TwtrModel {
     private Model create() {
 
         Model rdfModel = ModelFactory.createDefaultModel();
-        //rdfModel.read("vocab/twtr.ttl") ;
+        Reasoner reasoner = RDFSRuleReasonerFactory.theInstance().create(null);
+        reasoner.setParameter(ReasonerVocabulary.PROPsetRDFSLevel,
+                ReasonerVocabulary.RDFS_SIMPLE);
+        InfModel rdfsModel = ModelFactory.createInfModel(reasoner, rdfModel);
 
-        rdfModel.setNsPrefixes(new HashMap() {{
+        rdfsModel.setNsPrefixes(new HashMap() {{
             put("rdf", RDF.getURI());
             put("rdfs", RDFS.getURI());
             put("xsd", XSD.NS);
             put("twtr", TWTR.getURI());
         }});
 
-        return rdfModel;
+        return rdfsModel;
     }
 
-    private void createAdjectives(Resource tweet, TaggedSentence posTaggedSentence) {
+    private void createAdjectives(Resource tweet, TaggedSentence posTaggedSentence, Resource pos) {
         // Adjectives
         for (String adjStr : posTaggedSentence.getAdjectives()) {
             Resource adjective = model.createResource()
                     .addProperty(RDF.type, TWTR.Adjective)
                     .addProperty(TWTR.word, adjStr);
-            tweet.addProperty(TWTR.contains, adjective);
+            adjective.addProperty(RDFS.subClassOf, pos);
         }
     }
 
