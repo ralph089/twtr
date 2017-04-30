@@ -210,7 +210,7 @@ Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Enti
 - [ ] Überführung der Twitterdaten in den RDF-Triplestore anhand der gegebenen Zielstruktur.
 
 
-## Hinweise zum Start der Umgebung (noch nicht nötig)
+## Hinweise zum Start der Umgebung
 
 Zur persistenten Speicherung der RDF-Graphen und zur Abfrage der Daten über HTTP wird Apache Jena Fuseki eingesetzt. Die Webapplikation zur Abfrage der Daten läuft auf einem nginx Webserver.
 
