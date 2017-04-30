@@ -29,12 +29,13 @@ public class TwtrArq {
         String queryString = String.join(System.getProperty("line.separator"),
                 String.format("PREFIX twtr: <%s>", TWTR.getURI()),
                 "PREFIX  rdfs:<http://www.w3.org/2000/01/rdf-schema#>",
-                "SELECT ?word",
+                "SELECT ?properNoun",
                 "WHERE",
                 "{",
                 "?tweet twtr:contains ?pos . ",
-                "?s rdfs:subClassOf ?pos . ",
-                "?s twtr:word ?word . ",
+                "?element rdfs:subClassOf ?pos . ",
+                "?element a twtr:ProperNoun . ",
+                "?element twtr:word ?properNoun . ",
                 "}"
         );
 

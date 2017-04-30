@@ -136,7 +136,7 @@ twtr:word
   rdfs:comment "The word of the POS." ;
   rdfs:isDefinedBy twtr: ;
   rdfs:label "word" ;
-  rdfs:domain twtr:Elements ;
+  rdfs:domain twtr:POS ;
   rdfs:range rdfs:Literal .
 
 ### Twitter Account Properties

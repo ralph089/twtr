@@ -3,7 +3,7 @@
 TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu werden Tweets aus einer Datenbank mit zusätzlichen Informationen hinterlegt und in einem RDF-Graphen gespeichert. Mittels einer Webapplikation können diese Informationen anschließend abgefragt werden.
 
 ## RDF Vokabular
-<img src="http://svgshare.com/i/1SU.svg">
+<img src="http://svgshare.com/i/1UR.svg">
 
 ## Beispiel
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
@@ -13,71 +13,21 @@ Aus einer CSV-Datei wird folgender Datensatz eingelesen:
 ```
 
 #### XML-Struktur
-Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
+Daraus wird mittels Jena und verschiedenen Taggern folgender RDFS-Graph erzeugt:
 
 ```xml
-<twtr:Person rdf:about="http://example.org/17158660">
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:twtr="http://example.org/"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+  <twtr:Person rdf:about="http://example.org/17158660">
     <twtr:tweeted>
       <twtr:Tweet rdf:about="http://example.org/Tweet/781937602936963072">
         <twtr:contains>
-          <twtr:CommonNoun>
-            <twtr:word>Lives</twtr:word>
-          </twtr:CommonNoun>
-        </twtr:contains>
-        <twtr:contains>
-          <twtr:ProperNoun>
-            <twtr:word>socialmedia2day</twtr:word>
-          </twtr:ProperNoun>
-        </twtr:contains>
-        <twtr:contains>
-          <twtr:ProperNoun>
-            <twtr:word>MT</twtr:word>
-          </twtr:ProperNoun>
-        </twtr:contains>
-        <twtr:contains>
-          <twtr:Adjective>
-            <twtr:word>Connected</twtr:word>
-          </twtr:Adjective>
-        </twtr:contains>
-        <twtr:contains>
-          <twtr:Triplet>
-            <twtr:has>
-              <twtr:Object>
-                <twtr:word>How Our Connected Lives</twtr:word>
-              </twtr:Object>
-            </twtr:has>
-            <twtr:has>
-              <twtr:Verb>
-                <twtr:word>Will Change</twtr:word>
-              </twtr:Verb>
-            </twtr:has>
-            <twtr:has>
-              <twtr:Subject>
-                <twtr:word>SocialMedia</twtr:word>
-              </twtr:Subject>
-            </twtr:has>
-          </twtr:Triplet>
-        </twtr:contains>
-        <twtr:contains>
-          <twtr:Triplet>
-            <twtr:has>
-              <twtr:ProperNoun>
-                <twtr:word>Social</twtr:word>
-                <rdf:type rdf:resource="http://example.org/Object"/>
-              </twtr:ProperNoun>
-            </twtr:has>
-            <twtr:has>
-              <twtr:Verb>
-                <twtr:word>Gets</twtr:word>
-              </twtr:Verb>
-            </twtr:has>
-            <twtr:has>
-              <twtr:ProperNoun>
-                <twtr:word>IoT</twtr:word>
-                <rdf:type rdf:resource="http://example.org/Subject"/>
-              </twtr:ProperNoun>
-            </twtr:has>
-          </twtr:Triplet>
+          <twtr:POS rdf:about="http://example.org/Tweet/781937602936963072/POS/">
+            <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+          </twtr:POS>
         </twtr:contains>
         <twtr:tweetText>RT @24k: #IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0v…</twtr:tweetText>
         <twtr:tweetID>781937602936963072</twtr:tweetID>
@@ -90,36 +40,129 @@ Daraus wird mittels Jena und verschiedenen Taggern folgender RDF-Graph erzeugt:
     <twtr:userName>Jett Ray</twtr:userName>
     <rdf:type rdf:resource="http://example.org/TwitterAccount"/>
   </twtr:Person>
+  <twtr:Triplet rdf:nodeID="A0">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+  </twtr:Triplet>
+  <twtr:Triplet rdf:nodeID="A1">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+  </twtr:Triplet>
+  <twtr:Triplet rdf:nodeID="A2">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:nodeID="A2"/>
+  </twtr:Triplet>
+  <twtr:Subject rdf:nodeID="A3">
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <twtr:word>Our Connected Lives</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A3"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:Subject>
+  <twtr:Object rdf:nodeID="A4">
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <twtr:word>SocialMedia MT socialmedia2day</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A4"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:Object>
+  <twtr:Verb rdf:nodeID="A5">
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <twtr:word>Will Change</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A5"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:Verb>
+  <twtr:Subject rdf:nodeID="A6">
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <twtr:word>Our Lives</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A6"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:Subject>
+  <twtr:ProperNoun rdf:nodeID="A7">
+    <rdfs:subClassOf rdf:nodeID="A2"/>
+    <twtr:word>Social</twtr:word>
+    <rdf:type rdf:resource="http://example.org/Object"/>
+    <rdfs:subClassOf rdf:nodeID="A7"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:ProperNoun>
+  <twtr:Verb rdf:nodeID="A8">
+    <rdfs:subClassOf rdf:nodeID="A2"/>
+    <twtr:word>Gets</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A8"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:Verb>
+  <twtr:ProperNoun rdf:nodeID="A9">
+    <rdfs:subClassOf rdf:nodeID="A2"/>
+    <twtr:word>IoT</twtr:word>
+    <rdf:type rdf:resource="http://example.org/Subject"/>
+    <rdfs:subClassOf rdf:nodeID="A9"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:ProperNoun>
+  <twtr:CommonNoun rdf:nodeID="A10">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <twtr:word>Lives</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A10"/>
+  </twtr:CommonNoun>
+  <twtr:ProperNoun rdf:nodeID="A11">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <twtr:word>socialmedia2day</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A11"/>
+  </twtr:ProperNoun>
+  <twtr:ProperNoun rdf:nodeID="A12">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <twtr:word>MT</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A12"/>
+  </twtr:ProperNoun>
+  <twtr:ProperNoun rdf:nodeID="A13">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <twtr:word>SocialMedia</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A13"/>
+  </twtr:ProperNoun>
+  <twtr:Adjective rdf:nodeID="A14">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <twtr:word>Connected</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A14"/>
+  </twtr:Adjective>
+  <twtr:Object rdf:nodeID="A15">
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <twtr:word>SocialMedia MT socialmedia2day</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A15"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:Object>
+  <twtr:Verb rdf:nodeID="A16">
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <twtr:word>Will Change</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A16"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  </twtr:Verb>
+</rdf:RDF>
 ```
 
 #### Beispielabfrage
 Mittels der SPARQL-Anfragesprache lassen sich nun die Daten abfragen. 
 
-In diesem Fall lassen wir uns alle Tweets anzeigen, die ein Subjekt beinhalten, das gleichzeitig ein Proper Noun ist.
+In diesem Fall lassen wir uns alle Proper Nouns anzeigen. Durch einen RDFS-Reasoner kann Jena schlussfolgern, dass auch Triplets Teil der Part-Of-Speech (POS)-Klasse sind, wodurch tatsächlich alle Proper Nouns im Graphen angezeigt werden.
 
 ```sparql
+PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX  twtr: <http://www.example.com>
 
-SELECT  ?author ?tweetText ?subjWord
+SELECT  ?properNoun
 WHERE
-  { ?account  a                     twtr:TwitterAccount ;
-              twtr:userName         ?author ;
-              twtr:tweeted          ?tweet .
-    ?tweet    twtr:tweetText        ?tweetText ;
-              twtr:contains         ?triplet .
-    ?triplet  a                     twtr:Triplet ;
-              twtr:has              ?subj .
-    ?subj     a                     twtr:Subject ;
+  { ?tweet    twtr:contains         ?pos .
+    ?element  rdfs:subClassOf       ?pos ;
               a                     twtr:ProperNoun ;
-              twtr:word             ?subjWord
+              twtr:word             ?properNoun
   }
 ```
 
 #### Rückgabe
 ```
-| author     | tweetText                                                                                                                                      | subjWord |
-|------------|------------------------------------------------------------------------------------------------------------------------------------------------|----------|
-| "Jett Ray" | "RT @24k: #IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0v…" | "IoT"    |
+| properNoun        |
+|-------------------|
+| "socialmedia2day" |
+| "MT"              |
+| "SocialMedia"     |
+| "IoT"             |
+| "Social"          |
 ```
 
 ## Zusätzliche Informationen
