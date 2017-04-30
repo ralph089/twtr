@@ -9,7 +9,7 @@ TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu wer
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
 
 ```csv
-781935565872693248;14968996;3253;11130;2445;1864;235;Massachusetts;Michael Corey;14968996;★Columnist★Entrepreneur★Microsoft MVP★VMware vExpert★Author★Oracle Ace★Speaker★Virtualization Nut★Blog: http://michaelcorey.com/;Microsoft Ignite: How algorithms, the cloud, IoT and data are changing computing https://t.co/klbOZM6aCm
+781937602936963072;17158660;3096;15625;2415;2425;120;Virtually Everywhere;Jett Ray;17158660;Learning Leader, Soul Gardener, Conscious Wanderer. http://JettJournal.com ~  We are stronger, together. Peace/Love/Coffee ✌ ❤ ☕;RT @24k: #IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0v…
 ```
 
 #### XML-Struktur
