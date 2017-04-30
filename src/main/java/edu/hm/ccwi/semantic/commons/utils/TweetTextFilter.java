@@ -1,6 +1,5 @@
 package edu.hm.ccwi.semantic.commons.utils;
 
-import edu.hm.ccwi.semantic.tagger.Tagger;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,9 @@ import org.slf4j.LoggerFactory;
  */
 public class TweetTextFilter {
 
+    /**
+     * The Logger.
+     */
     static final Logger logger = LoggerFactory.getLogger(TweetTextFilter.class);
 
     /**
@@ -24,35 +26,76 @@ public class TweetTextFilter {
         return text.replaceAll("[^\\x0A\\x0D\\x20-\\x7E]", "");
     }
 
-    public static String removeHashTagSymbols(String text){
+    /**
+     * Remove hash tag symbols string.
+     *
+     * @param text the text
+     * @return the string
+     */
+    public static String removeHashTagSymbols(String text) {
         text = text.replaceAll("[#]", "");
         return text;
     }
 
-    public static String removeMentionsSymbol(String text){
+    /**
+     * Remove mentions symbol string.
+     *
+     * @param text the text
+     * @return the string
+     */
+    public static String removeMentionsSymbol(String text) {
         text = text.replaceAll("[@]", "");
         return text;
     }
 
-    public static String removeURLs(String text){
+    /**
+     * Remove ur ls string.
+     *
+     * @param text the text
+     * @return the string
+     */
+    public static String removeURLs(String text) {
         text = text.replaceAll("https?://\\S+\\s?", "");
         return text;
     }
 
-    public static String ensureSentenceWithDot(String text){
-        if(text.length() > 0) {
-            if (text.charAt(text.length() - 1) != '.') {
+    /**
+     * Ensure sentence ending string.
+     *
+     * @param text the text
+     * @return the string
+     */
+    public static String ensureSentenceEnding(String text) {
+        if (text.length() > 0) {
+            if (text.charAt(text.length() - 1) != '.' ||
+                    text.charAt(text.length() - 1) != '?' ||
+                    text.charAt(text.length() - 1) != '!') {
+                text = (text + ".");
+            } else if (text.charAt(text.length() - 1) == ':') {
+                text = text.substring(0, text.length() - 1);
                 text = (text + ".");
             }
         }
         return text;
     }
 
-    public static String removeReTweet(String text){
+    /**
+     * Remove re tweet string.
+     *
+     * @param text the text
+     * @return the string
+     */
+    public static String removeReTweet(String text) {
         text = text.replaceAll("(RT|retweet|retweeted|from|via) .\\S+:", "");
         return text;
     }
 
+    /**
+     * Clear tweet string.
+     *
+     * @param text the text
+     * @return the string
+     */
     public static String clearTweet(String text) {
         text = Validate.notEmpty(text);
         text = removeNonAscii(text);
@@ -61,7 +104,7 @@ public class TweetTextFilter {
         text = removeMentionsSymbol(text);
         text = removeURLs(text);
         text = text.trim();
-        text = ensureSentenceWithDot(text);
+        text = ensureSentenceEnding(text);
 
         return text;
     }

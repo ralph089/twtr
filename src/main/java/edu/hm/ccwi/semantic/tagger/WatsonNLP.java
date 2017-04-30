@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * The type Watson nlp.
+ * Watson NLP Service.
+ *
+ * @author Ralph Offinger
  */
 public class WatsonNLP {
 

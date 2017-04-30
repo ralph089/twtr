@@ -19,11 +19,6 @@ import java.util.List;
  */
 public class Controller {
 
-    /**
-     * Main.
-     *
-     * @param args the args
-     */
     static Logger log = Logger.getLogger(Controller.class);
 
     /**
@@ -55,7 +50,7 @@ public class Controller {
                     TaggedTweet taggedTweet = tagger.tagTweet(entry);
                     if (taggedTweet != null) {
                         twitterModel.addTweet(taggedTweet);
-                        taggedTweet.toCSV("src/main/resources/tweets/OpenIE_Triplet_Tagger.csv");
+                        //taggedTweet.toCSV("src/main/resources/tweets/OpenIE_Triplet_Tagger.csv");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -66,5 +61,6 @@ public class Controller {
 
         twtrArq.printTweetsWithTriplet();
         twtrArq.printSubjectCommonNouns();
+        twtrArq.printSubjectProperNouns();
     }
 }

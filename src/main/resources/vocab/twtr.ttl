@@ -66,14 +66,6 @@ twtr:Tweet
 
 ### A Tweet contains POS-Information
 
-twtr:is
-  rdf:type    rdf:Property , owl:ObjectProperty ;
-  rdfs:comment "A Tweet contains Part-of-Speech-Information." ;
-  rdfs:domain twtr:SVO ;
-  rdfs:isDefinedBy twtr: ;
-  rdfs:label "is" ;
-  rdfs:range twtr:POS .
-
 twtr:contains
   rdf:type    rdf:Property , owl:ObjectProperty ;
   rdfs:comment "A Tweet contains Part-of-Speech-Information." ;

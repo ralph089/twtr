@@ -5,6 +5,7 @@ import edu.hm.ccwi.semantic.tagger.triplet.models.Subj;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Verb;
 
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -16,9 +17,9 @@ public class TaggedSentence {
 
     private String sentence;
     private List<Triplet<Subj, Verb, Obj>> triplets;
-    private List<String> adjectives;
-    private List<ProperNoun> unrelatedProperNouns;
-    private List<String> unrelatedCommonNouns;
+    private HashSet<String> adjectives;
+    private HashSet<ProperNoun> unrelatedProperNouns;
+    private HashSet<String> unrelatedCommonNouns;
 
     /**
      * Instantiates a new Tagged sentence.
@@ -29,7 +30,7 @@ public class TaggedSentence {
      * @param unrelatedProperNouns the unrelated proper nouns
      * @param unrelatedCommonNouns the unrelated common nouns
      */
-    public TaggedSentence(String sentence, List<Triplet<Subj, Verb, Obj>> triplets, List<String> adjectives, List<ProperNoun> unrelatedProperNouns, List<String> unrelatedCommonNouns) {
+    public TaggedSentence(String sentence, List<Triplet<Subj, Verb, Obj>> triplets, HashSet<String> adjectives, HashSet<ProperNoun> unrelatedProperNouns, HashSet<String> unrelatedCommonNouns) {
         this.sentence = sentence;
         this.triplets = triplets;
         this.adjectives = adjectives;
@@ -42,7 +43,7 @@ public class TaggedSentence {
      *
      * @return the unrelated proper nouns
      */
-    public List<ProperNoun> getUnrelatedProperNouns() {
+    public HashSet<ProperNoun> getUnrelatedProperNouns() {
         return unrelatedProperNouns;
     }
 
@@ -51,7 +52,7 @@ public class TaggedSentence {
      *
      * @return the unrelated common nouns
      */
-    public List<String> getUnrelatedCommonNouns() {
+    public HashSet<String> getUnrelatedCommonNouns() {
         return unrelatedCommonNouns;
     }
 
@@ -78,7 +79,7 @@ public class TaggedSentence {
      *
      * @return the adjectives
      */
-    public List<String> getAdjectives() {
+    public HashSet<String> getAdjectives() {
         return adjectives;
     }
 }

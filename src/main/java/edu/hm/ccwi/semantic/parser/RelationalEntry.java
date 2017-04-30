@@ -42,10 +42,20 @@ public class RelationalEntry {
     @CsvField(pos = 12)
     private String tweetText;
 
+    /**
+     * Gets location.
+     *
+     * @return the location
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     * Sets location.
+     *
+     * @param location the location
+     */
     public void setLocation(String location) {
         this.location = location;
     }
@@ -223,7 +233,7 @@ public class RelationalEntry {
      * @return the user description
      */
     public String getUserDescription() {
-        if(userDescription == null) {
+        if (userDescription == null) {
             return "";
         } else {
             return userDescription;

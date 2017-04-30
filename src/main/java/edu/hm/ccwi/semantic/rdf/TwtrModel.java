@@ -78,7 +78,7 @@ public class TwtrModel {
 
         for (String cNounStr : sentence.getUnrelatedCommonNouns()) {
             Resource cNoun = model.createResource()
-                    .addProperty(RDF.type, TWTR.ProperNoun)
+                    .addProperty(RDF.type, TWTR.CommonNoun)
                     .addProperty(TWTR.word, cNounStr);
             tweet.addProperty(TWTR.contains, cNoun);
         }
@@ -96,9 +96,9 @@ public class TwtrModel {
                     .addProperty(TWTR.word, triplet.getSubject().getWord());
 
             if (triplet.getObject().isProperNoun()) {
-                subject.addProperty(TWTR.is, TWTR.ProperNoun);
+                subject.addProperty(RDF.type, TWTR.ProperNoun);
             } else if (triplet.getObject().isNoun()) {
-                subject.addProperty(TWTR.is, TWTR.CommonNoun);
+                subject.addProperty(RDF.type, TWTR.CommonNoun);
             }
 
             // Create Verb
@@ -112,9 +112,9 @@ public class TwtrModel {
                     .addProperty(TWTR.word, triplet.getObject().getWord());
 
             if (triplet.getObject().isProperNoun()) {
-                object.addProperty(TWTR.is, TWTR.ProperNoun);
+                object.addProperty(RDF.type, TWTR.ProperNoun);
             } else if (triplet.getObject().isNoun()) {
-                object.addProperty(TWTR.is, TWTR.CommonNoun);
+                object.addProperty(RDF.type, TWTR.CommonNoun);
             }
 
             // Create Links

@@ -42,7 +42,7 @@ public class TwtrArq {
                 "?triplet twtr:has ?subj.",
 
                 "?subj a twtr:Subject .",
-                "?subj twtr:is twtr:CommonNoun .",
+                "?subj a twtr:CommonNoun .",
                 "?subj twtr:word ?subjWord .",
                 "}"
         );
@@ -50,6 +50,37 @@ public class TwtrArq {
 
         printQueryResults(queryString);
     }
+
+    /**
+     * Prints all Subjects which are a Proper Noun.
+     */
+    public void printSubjectProperNouns() {
+
+        String queryString = String.join(System.getProperty("line.separator"),
+                String.format("PREFIX twtr: <%s>", TWTR.getURI()),
+                "SELECT ?author ?tweetText ?subjWord",
+                "WHERE",
+                "{",
+                "?account a twtr:TwitterAccount .",
+                "?account twtr:userName ?author .",
+                "?account twtr:tweeted ?tweet .",
+
+                "?tweet twtr:tweetText ?tweetText .",
+                "?tweet twtr:contains ?triplet .",
+
+                "?triplet a twtr:Triplet .",
+                "?triplet twtr:has ?subj.",
+
+                "?subj a twtr:Subject .",
+                "?subj a twtr:ProperNoun .",
+                "?subj twtr:word ?subjWord .",
+                "}"
+        );
+
+
+        printQueryResults(queryString);
+    }
+
 
     /**
      * Prints all Tweets with a Subject, Verb, Object-Triple.

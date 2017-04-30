@@ -1,7 +1,5 @@
 package edu.hm.ccwi.semantic.tagger.triplet;
 
-import edu.hm.ccwi.semantic.commons.utils.TweetTextFilter;
-import edu.hm.ccwi.semantic.parser.RelationalEntry;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Obj;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Subj;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;

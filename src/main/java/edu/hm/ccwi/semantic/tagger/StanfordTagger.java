@@ -18,11 +18,14 @@ import edu.stanford.nlp.util.CoreMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 
 /**
- * The Stanford POS Tagger.
+ * The Stanford Tagger.
+ *
+ * Uses Stanford NLP for POS-Tagging.
  *
  * @author Ralph Offinger
  */
@@ -37,10 +40,9 @@ public class StanfordTagger extends Tagger {
     /**
      * Instantiates a new Stanford tagger.
      * <p>
-     * Reuse StanfordCoreNLP Pipeline from SemanticTagger.
      *
-     * @param tripletTagger the triplet tagger
-     * @param nerTagger     the ner tagger
+     * @param tripletTagger the Triplet-tagger
+     * @param nerTagger     the NER-tagger
      */
     public StanfordTagger(TripletTagger tripletTagger, NERTagger nerTagger) {
         super(tripletTagger, nerTagger);
@@ -64,9 +66,11 @@ public class StanfordTagger extends Tagger {
             logger.debug(String.format("Analyzing sentence: ", sentence.toString()));
 
             // Part of Speech
-            ArrayList<String> properNounList = new ArrayList<String>();
-            ArrayList<String> nounList = new ArrayList<String>();
-            ArrayList<String> adjectiveList = new ArrayList<String>();
+            HashSet<String> properNounList = new HashSet<>();
+            HashSet<String> nounList = new HashSet<>();
+            HashSet<String> adjectiveList = new HashSet<>();
+
+            List<Triplet<Subj, Verb, Obj>> tripletList = tripletTagger.tagTriplet(sentence.toString());
 
             // Finds all nouns, proper nouns and adjective in the sentence.
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -76,55 +80,57 @@ public class StanfordTagger extends Tagger {
                 String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
 
                 if (!isHashTagOrMention(word)) {
-                    if (PROPERNOUN_TYPE.contains(pos) && !properNounList.contains(word)) {
+                    if (PROPERNOUN_TYPE.contains(pos)) {
+                        logger.debug(String.format("Adding Proper Noun: %s", word));
                         properNounList.add(word);
-                    } else if (NOUN_TYPE.contains(pos) && !nounList.contains(word)) {
+                    } else if (NOUN_TYPE.contains(pos)) {
+                        logger.debug(String.format("Adding Common Noun: %s", word));
                         nounList.add(word);
                     } else if (ADJECTIVE_TYPE.contains(pos) && !adjectiveList.contains(word)) {
+                        logger.debug(String.format("Adding Adjective: %s", word));
                         adjectiveList.add(word);
                     }
                 }
             }
 
-            List<Triplet<Subj, Verb, Obj>> tripletList = tripletTagger.tagTriplet(sentence.toString());
+            HashSet<String> unrelatedProperNouns = new HashSet<>(properNounList);
+            HashSet<String> unrelatedNouns = new HashSet<>(nounList);
 
             for (Triplet triplet : tripletList) {
-
-                // Set Subject Proper Noun and Entity
                 if (properNounList.contains(triplet.getSubject().getWord())) {
-                    triplet.getSubject().setProperNoun(true, tagEntity(triplet.getSubject().getWord()));
+                    triplet.getSubject().setProperNoun(true, triplet.getSubject().getWord());
+                    if (unrelatedProperNouns.contains(triplet.getSubject().getWord())) {
+                        unrelatedProperNouns.remove(triplet.getSubject().getWord());
+                    }
                 } else if (nounList.contains(triplet.getSubject().getWord())) {
                     triplet.getSubject().setNoun(true);
+                    if (unrelatedNouns.contains(triplet.getSubject().getWord())) {
+                        unrelatedNouns.remove(triplet.getSubject().getWord());
+                    }
                 }
 
-                // Set Object Proper Noun and Entity
                 if (properNounList.contains(triplet.getObject().getWord())) {
-                    triplet.getObject().setProperNoun(true, tagEntity(triplet.getSubject().getWord()));
+                    triplet.getObject().setProperNoun(true, triplet.getObject().getWord());
+                    if (unrelatedProperNouns.contains(triplet.getObject().getWord())) {
+                        unrelatedProperNouns.remove(triplet.getObject().getWord());
+                    }
                 } else if (nounList.contains(triplet.getObject().getWord())) {
                     triplet.getObject().setNoun(true);
-                }
-
-                // Remove unrelated Nouns
-                if (properNounList.contains(triplet.getSubject().getWord())) {
-                    properNounList.remove(triplet.getSubject().getWord());
-                }
-                if (nounList.contains(triplet.getSubject().getWord())) {
-                    nounList.remove(triplet.getSubject().getWord());
-                }
-                if (properNounList.contains(triplet.getObject().getWord())) {
-                    properNounList.remove(triplet.getObject().getWord());
-                }
-                if (nounList.contains(triplet.getObject().getWord())) {
-                    nounList.remove(triplet.getObject().getWord());
+                    if (unrelatedNouns.contains(triplet.getObject().getWord())) {
+                        unrelatedNouns.remove(triplet.getObject().getWord());
+                    }
                 }
             }
 
-            ArrayList<ProperNoun> unrelatedProperNounList = new ArrayList<>();
-            for (String properNoun : properNounList) {
-                unrelatedProperNounList.add(new ProperNoun(properNoun, tagEntity(properNoun)));
+            logger.debug("Unrelated Proper Noun List: " + unrelatedProperNouns);
+            logger.debug("Unrelated Common Noun List: " + unrelatedNouns);
+
+            HashSet<ProperNoun> unRelatedPropNounWithEntity = new HashSet<>();
+            for (String properNoun : unrelatedProperNouns) {
+                unRelatedPropNounWithEntity.add(new ProperNoun(properNoun, tagEntity(properNoun)));
             }
 
-            TaggedSentence posTaggedSentence = new TaggedSentence(sentence.toString(), tripletList, adjectiveList, unrelatedProperNounList, nounList);
+            TaggedSentence posTaggedSentence = new TaggedSentence(sentence.toString(), tripletList, adjectiveList, unRelatedPropNounWithEntity, unrelatedNouns);
             posTaggedSentences.add(posTaggedSentence);
         }
         return posTaggedSentences;

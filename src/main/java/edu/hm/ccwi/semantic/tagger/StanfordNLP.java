@@ -5,7 +5,9 @@ import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import java.util.Properties;
 
 /**
- * The type Stanford nlp.
+ * The Stanford NLP Service.
+ *
+ * @author Ralph Offinger
  */
 public class StanfordNLP {
 
