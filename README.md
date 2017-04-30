@@ -159,7 +159,7 @@ Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Enti
 
 ## Tasks:
 
-- [ ] Auswahl und Evaluierung eines POS-Taggers (Goldstandard).
+- [ ] Auswahl und Evaluierung eines Subjekt-Verb-Objekt-Taggers (Goldstandard).
 - [x] Anwendung der Stanford Named Entity Recognition.
 - [ ] Anwendung der Watson NLU Keyword-Extraction + Named Entity Recognition.
 - [x] Prototypische Implementierung einer RDF-Zielstruktur mit Jena + (Fuseki).
