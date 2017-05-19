@@ -9,7 +9,7 @@ TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu wer
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
 
 ```csv
-781937602936963072;17158660;3096;15625;2415;2425;120;Virtually Everywhere;Jett Ray;17158660;Learning Leader, Soul Gardener, Conscious Wanderer. http://JettJournal.com ~  We are stronger, together. Peace/Love/Coffee ✌ ❤ ☕;RT @24k: #IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0v…
+781935961508814848;17145442;3097;99469;53837;39946;2214;Las Vegas, NV;Chris Rauschnot;17145442;Blogger @HuffingtonPost @MacTrast +, Speaker, Award Winner & Social Media Consultant. @24kMedia http://bit.ly/24kMediaFB ✈️ #Travel #Tech #Vegas #Food #Auto;#IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0vlCQs
 ```
 
 #### XML-Struktur
@@ -21,118 +21,118 @@ Daraus wird mittels Jena und verschiedenen Taggern folgender RDFS-Graph erzeugt:
     xmlns:twtr="http://example.org/"
     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
-  <twtr:Person rdf:about="http://example.org/17158660">
+  <twtr:Person rdf:about="http://example.org/17145442">
     <twtr:tweeted>
-      <twtr:Tweet rdf:about="http://example.org/Tweet/781937602936963072">
+      <twtr:Tweet rdf:about="http://example.org/Tweet/781935961508814848">
         <twtr:contains>
-          <twtr:POS rdf:about="http://example.org/Tweet/781937602936963072/POS/">
-            <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+          <twtr:POS rdf:about="http://example.org/Tweet/781935961508814848/POS/">
+            <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
           </twtr:POS>
         </twtr:contains>
-        <twtr:tweetText>RT @24k: #IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0v…</twtr:tweetText>
-        <twtr:tweetID>781937602936963072</twtr:tweetID>
+        <twtr:tweetText>#IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0vlCQs</twtr:tweetText>
+        <twtr:tweetID>781935961508814848</twtr:tweetID>
       </twtr:Tweet>
     </twtr:tweeted>
-    <twtr:userDescription>Learning Leader, Soul Gardener, Conscious Wanderer. http://JettJournal.com ~  We are stronger, together. Peace/Love/Coffee ✌ ❤ ☕</twtr:userDescription>
+    <twtr:userDescription>Blogger @HuffingtonPost @MacTrast +, Speaker, Award Winner &amp; Social Media Consultant. @24kMedia http://bit.ly/24kMediaFB ✈️ #Travel #Tech #Vegas #Food #Auto</twtr:userDescription>
     <twtr:followerCount rdf:datatype="http://www.w3.org/2001/XMLSchema#int"
-    >2415</twtr:followerCount>
-    <twtr:userID>17158660</twtr:userID>
-    <twtr:userName>Jett Ray</twtr:userName>
+    >53837</twtr:followerCount>
+    <twtr:userID>17145442</twtr:userID>
+    <twtr:userName>Chris Rauschnot</twtr:userName>
     <rdf:type rdf:resource="http://example.org/TwitterAccount"/>
   </twtr:Person>
   <twtr:Triplet rdf:nodeID="A0">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
     <rdfs:subClassOf rdf:nodeID="A0"/>
   </twtr:Triplet>
   <twtr:Triplet rdf:nodeID="A1">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
     <rdfs:subClassOf rdf:nodeID="A1"/>
   </twtr:Triplet>
   <twtr:Triplet rdf:nodeID="A2">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
     <rdfs:subClassOf rdf:nodeID="A2"/>
   </twtr:Triplet>
-  <twtr:Subject rdf:nodeID="A3">
-    <rdfs:subClassOf rdf:nodeID="A0"/>
-    <twtr:word>Our Connected Lives</twtr:word>
+  <twtr:Verb rdf:nodeID="A3">
+    <rdfs:subClassOf rdf:nodeID="A2"/>
+    <twtr:word>Gets</twtr:word>
     <rdfs:subClassOf rdf:nodeID="A3"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-  </twtr:Subject>
-  <twtr:Object rdf:nodeID="A4">
-    <rdfs:subClassOf rdf:nodeID="A1"/>
-    <twtr:word>SocialMedia MT socialmedia2day</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A4"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-  </twtr:Object>
-  <twtr:Verb rdf:nodeID="A5">
-    <rdfs:subClassOf rdf:nodeID="A1"/>
-    <twtr:word>Will Change</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A5"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
   </twtr:Verb>
-  <twtr:Subject rdf:nodeID="A6">
-    <rdfs:subClassOf rdf:nodeID="A1"/>
-    <twtr:word>Our Lives</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A6"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-  </twtr:Subject>
-  <twtr:ProperNoun rdf:nodeID="A7">
+  <twtr:ProperNoun rdf:nodeID="A4">
     <rdfs:subClassOf rdf:nodeID="A2"/>
     <twtr:word>Social</twtr:word>
     <rdf:type rdf:resource="http://example.org/Object"/>
-    <rdfs:subClassOf rdf:nodeID="A7"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+    <rdfs:subClassOf rdf:nodeID="A4"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
   </twtr:ProperNoun>
-  <twtr:Verb rdf:nodeID="A8">
-    <rdfs:subClassOf rdf:nodeID="A2"/>
-    <twtr:word>Gets</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A8"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
+  <twtr:Subject rdf:nodeID="A5">
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <twtr:word>Our Lives</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A5"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+  </twtr:Subject>
+  <twtr:Verb rdf:nodeID="A6">
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <twtr:word>Will Change</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A6"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
   </twtr:Verb>
-  <twtr:ProperNoun rdf:nodeID="A9">
+  <twtr:Subject rdf:nodeID="A7">
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <twtr:word>Our Connected Lives</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A7"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+  </twtr:Subject>
+  <twtr:Verb rdf:nodeID="A8">
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <twtr:word>Will Change</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A8"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+  </twtr:Verb>
+  <twtr:Object rdf:nodeID="A9">
+    <rdfs:subClassOf rdf:nodeID="A0"/>
+    <twtr:word>SocialMedia MT socialmedia2day</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A9"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+  </twtr:Object>
+  <twtr:ProperNoun rdf:nodeID="A10">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+    <twtr:word>SocialMedia</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A10"/>
+  </twtr:ProperNoun>
+  <twtr:ProperNoun rdf:nodeID="A11">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+    <twtr:word>MT</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A11"/>
+  </twtr:ProperNoun>
+  <twtr:Object rdf:nodeID="A12">
+    <rdfs:subClassOf rdf:nodeID="A1"/>
+    <twtr:word>SocialMedia MT socialmedia2day</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A12"/>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+  </twtr:Object>
+  <twtr:Adjective rdf:nodeID="A13">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+    <twtr:word>Connected</twtr:word>
+    <rdfs:subClassOf rdf:nodeID="A13"/>
+  </twtr:Adjective>
+  <twtr:ProperNoun rdf:nodeID="A14">
     <rdfs:subClassOf rdf:nodeID="A2"/>
     <twtr:word>IoT</twtr:word>
     <rdf:type rdf:resource="http://example.org/Subject"/>
-    <rdfs:subClassOf rdf:nodeID="A9"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-  </twtr:ProperNoun>
-  <twtr:CommonNoun rdf:nodeID="A10">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-    <twtr:word>Lives</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A10"/>
-  </twtr:CommonNoun>
-  <twtr:ProperNoun rdf:nodeID="A11">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-    <twtr:word>socialmedia2day</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A11"/>
-  </twtr:ProperNoun>
-  <twtr:ProperNoun rdf:nodeID="A12">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-    <twtr:word>MT</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A12"/>
-  </twtr:ProperNoun>
-  <twtr:ProperNoun rdf:nodeID="A13">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-    <twtr:word>SocialMedia</twtr:word>
-    <rdfs:subClassOf rdf:nodeID="A13"/>
-  </twtr:ProperNoun>
-  <twtr:Adjective rdf:nodeID="A14">
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-    <twtr:word>Connected</twtr:word>
     <rdfs:subClassOf rdf:nodeID="A14"/>
-  </twtr:Adjective>
-  <twtr:Object rdf:nodeID="A15">
-    <rdfs:subClassOf rdf:nodeID="A0"/>
-    <twtr:word>SocialMedia MT socialmedia2day</twtr:word>
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+  </twtr:ProperNoun>
+  <twtr:ProperNoun rdf:nodeID="A15">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+    <twtr:word>socialmedia2day</twtr:word>
     <rdfs:subClassOf rdf:nodeID="A15"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-  </twtr:Object>
-  <twtr:Verb rdf:nodeID="A16">
-    <rdfs:subClassOf rdf:nodeID="A0"/>
-    <twtr:word>Will Change</twtr:word>
+  </twtr:ProperNoun>
+  <twtr:CommonNoun rdf:nodeID="A16">
+    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781935961508814848/POS/"/>
+    <twtr:word>Lives</twtr:word>
     <rdfs:subClassOf rdf:nodeID="A16"/>
-    <rdfs:subClassOf rdf:resource="http://example.org/Tweet/781937602936963072/POS/"/>
-  </twtr:Verb>
+  </twtr:CommonNoun>
 </rdf:RDF>
 ```
 
@@ -148,9 +148,10 @@ Durch einen RDFS-Reasoner kann Jena schlussfolgern, dass auch Triplets Teil der 
 PREFIX  rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX  : <http://example.org/>
 
-SELECT  ?properNoun
+SELECT  ?tweetText ?properNoun
 WHERE
-  { ?tweet    :contains         ?pos .
+  { ?tweet    :contains         ?pos ;
+    	 	  :tweetText 		?tweetText .
     ?element  rdfs:subClassOf   ?pos ;
               a                 :ProperNoun ;
               a                 :Subject ;
@@ -160,9 +161,9 @@ WHERE
 
 #### Rückgabe
 ```
-| properNoun        |
-|-------------------|
-| "IoT"             |
+| tweetText                                                                                                                              | properNoun |
+|----------------------------------------------------------------------------------------------------------------------------------------|------------|
+| #IoT Gets Social: How Our Connected Lives Will Change #SocialMedia https://t.co/LaToDF8BNa MT @socialmedia2day https://t.co/Mudz0vlCQs | IoT        |
 ```
 
 ## Zusätzliche Informationen
@@ -206,9 +207,8 @@ Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Enti
 - [x] Anwendung der Stanford Named Entity Recognition.
 - [ ] Anwendung der Watson NLU Keyword-Extraction + Named Entity Recognition.
 - [x] Prototypische Implementierung einer RDF-Zielstruktur mit Jena + (Fuseki).
+- [X] Überführung der Twitterdaten in den RDF-Triplestore anhand der gegebenen Zielstruktur.
 - [ ] Entwicklung eines Abfrageservices auf Basis von SPARQL und Angular.
-- [ ] Überführung der Twitterdaten in den RDF-Triplestore anhand der gegebenen Zielstruktur.
-
 
 ## Hinweise zum Start der Umgebung
 

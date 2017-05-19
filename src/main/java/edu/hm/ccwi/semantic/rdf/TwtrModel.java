@@ -5,6 +5,8 @@ import edu.hm.ccwi.semantic.tagger.models.ProperNoun;
 import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;
+import org.apache.jena.query.DatasetAccessor;
+import org.apache.jena.query.DatasetAccessorFactory;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.reasoner.Reasoner;
 import org.apache.jena.reasoner.ReasonerRegistry;
@@ -152,6 +154,18 @@ public class TwtrModel {
      */
     public void write(OutputStream out) {
         model.write(out, "RDF/XML");
+    }
+
+    /**
+     * Uploads the model to Fuseki.
+     *
+     * @param serviceURI Location of the datastore
+     */
+    public void uploadToFuseki(String serviceURI) {
+        DatasetAccessor accessor = DatasetAccessorFactory.createHTTP(serviceURI);
+        accessor.putModel(model);
+        //accessor.add(model);
+        log.info("Uploaded data to Fuseki!");
     }
 
     private Model create() {

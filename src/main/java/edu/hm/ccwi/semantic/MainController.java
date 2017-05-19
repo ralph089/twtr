@@ -15,11 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * The Controller.
+ * The Main Controller.
  */
-public class Controller {
+public class MainController {
 
-    static Logger log = Logger.getLogger(Controller.class);
+    static Logger log = Logger.getLogger(MainController.class);
 
     /**
      * Main.
@@ -58,9 +58,9 @@ public class Controller {
             }
         }
         twitterModel.write(System.out);
-
+        twitterModel.uploadToFuseki("http://localhost:3030/tdb");
         //twtrArq.printTweetsWithTriplet();
-        twtrArq.printInferenceCN();
+        //twtrArq.printInferenceCN();
         //twtrArq.printSubjectProperNouns();
     }
 }
