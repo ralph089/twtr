@@ -8,7 +8,9 @@ import edu.stanford.nlp.ling.CoreLabel;
 import java.util.List;
 
 /**
- * Standford Named Entity
+ * Standford Named Entity Tagger
+ *
+ * Tags an Entity as Location, as Person or as Organization
  *
  * @author Ralph Offinger
  */
@@ -20,7 +22,7 @@ public class StanfordNER extends NERTagger {
     CRFClassifier<CoreLabel> classifier;
 
     /**
-     * Instantiates a new Stanford ner.
+     * Instantiates a new Stanford Named Entity Tagger.
      */
     public StanfordNER() {
         String serializedClassifier = "nlp/english_16.all.3class.distsim.crf.ser.gz";
@@ -28,8 +30,8 @@ public class StanfordNER extends NERTagger {
     }
 
     @Override
-    public String identifyNER(String text) {
-        List<List<CoreLabel>> classify = classifier.classify(text);
+    public String identifyNER(String word, String tweetText) {
+        List<List<CoreLabel>> classify = classifier.classify(word);
         for (List<CoreLabel> coreLabels : classify) {
             for (CoreLabel coreLabel : coreLabels) {
                 String category = coreLabel.get(CoreAnnotations.AnswerAnnotation.class);
@@ -39,6 +41,10 @@ public class StanfordNER extends NERTagger {
             }
         }
         return "";
+    }
+
+    public String identifyNER(String word) {
+        return identifyNER(word, "");
     }
 }
 

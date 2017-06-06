@@ -169,7 +169,7 @@ WHERE
 ## Zusätzliche Informationen
 Die Tweets werden mit folgenden zusätzlichen Informationen hinterlegt:
 
-#### Subjekt-Verb-Objekt Tagging
+#### Triplet (Subjekt-Verb-Objekt)-Tagging
 
 Derzeit sind für diesen Zweck drei verschiedene Varianten von Taggern eingebaut, die noch evaluiert werden müssen:
 
@@ -179,7 +179,7 @@ Derzeit sind für diesen Zweck drei verschiedene Varianten von Taggern eingebaut
 
 Um den Watson Tagger zu nutzen, werden entsprechende IBM Watson Cloud Credentials mit aktivierter Natural Language Understanding API benötigt. Die Zugangsdaten müssen dann in den `bluemix.properties` hinterlegt werden.
 
-#### POS-Tagging
+#### Part-of-Speech (POS)-Tagging
 
 Neben dem Subjekt-Verb-Objekt Tagging wird außerdem noch die Wortart ermittelt. Derzeit werden folgende Wortarten hinterlegt:
 
@@ -189,23 +189,20 @@ Neben dem Subjekt-Verb-Objekt Tagging wird außerdem noch die Wortart ermittelt.
 
 Dazu wird derzeit Stanford NLP mit dem Gate-Twitter-Modell verwendet.
 
-#### Kategorisierung von Eigennamen 
+#### Kategorisierung von Eigennamen (Named Entity Recognition)
 Bei der Kategorisierung von Eigennamen wird der Autor und die Proper Nouns einer der folgenden drei Kategorien zugeordnet:
 
 * Person
 * Organization
 * Place
 
-Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Entity Recognition (NER) API. Zusätzlich soll noch eine Anbindung an die Watson NLU API erfolgen.
-
-#### Keywords
-(Keyword-Extraction ...)
+Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Entity Recognition (NER) API oder der Watson NLU API.
 
 ## Tasks:
 
 - [ ] Auswahl und Evaluierung eines Subjekt-Verb-Objekt-Taggers (Goldstandard).
 - [x] Anwendung der Stanford Named Entity Recognition.
-- [ ] Anwendung der Watson NLU Keyword-Extraction + Named Entity Recognition.
+- [x] Anwendung der Watson Named Entity Recognition.
 - [x] Prototypische Implementierung einer RDF-Zielstruktur mit Jena + (Fuseki).
 - [X] Überführung der Twitterdaten in den RDF-Triplestore anhand der gegebenen Zielstruktur.
 - [ ] Entwicklung eines Abfrageservices auf Basis von SPARQL und Angular.

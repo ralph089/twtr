@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * The Stanford Tagger.
- *
+ * <p>
  * Uses Stanford NLP for POS-Tagging.
  *
  * @author Ralph Offinger
@@ -36,6 +36,8 @@ public class StanfordTagger extends Tagger {
     private static final List<String> ADJECTIVE_TYPE = Arrays.asList("JJ", "JJR", "JJS");
 
     private final StanfordCoreNLP pipeline;
+
+    private String tweet;
 
     /**
      * Instantiates a new Stanford tagger.
@@ -53,17 +55,16 @@ public class StanfordTagger extends Tagger {
     protected List<TaggedSentence> tagSentences(RelationalEntry entry) {
 
         List<TaggedSentence> posTaggedSentences = new ArrayList<>();
-        String text = TweetTextFilter.clearTweet(entry.getTweetText());
-        logger.info(String.format("Filtered Tweet to: %s", text));
+        logger.info("Tweet vor Filterung: " + entry.getTweetText());
+        tweet = TweetTextFilter.clearTweet(entry.getTweetText());
+        logger.info("Tweet nach Filterung: " + tweet);
 
-        Annotation document = new Annotation(text);
+        Annotation document = new Annotation(tweet);
         pipeline.annotate(document);
 
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
 
         for (CoreMap sentence : sentences) {
-
-            logger.debug(String.format("Analyzing sentence: ", sentence.toString()));
 
             // Part of Speech
             HashSet<String> properNounList = new HashSet<>();
@@ -76,7 +77,7 @@ public class StanfordTagger extends Tagger {
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
                 // this is the text of the token
                 String word = token.get(CoreAnnotations.TextAnnotation.class);
-                // this is the POS tagSentences of the token
+
                 String pos = token.get(CoreAnnotations.PartOfSpeechAnnotation.class);
 
                 if (!isHashTagOrMention(word)) {
@@ -139,7 +140,7 @@ public class StanfordTagger extends Tagger {
 
     @Override
     protected String tagEntity(String entityName) {
-        String category = nerTagger.identifyNER(entityName);
+        String category = nerTagger.identifyNER(entityName, tweet);
         logger.debug("NER: " + entityName + ": Category: " + category);
         return category;
     }

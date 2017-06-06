@@ -22,10 +22,9 @@ public class StanfordNLP {
 
         properties.put("tokenize.language", "en");
 
-        //properties.put("openie.triple.strict", "true");
-
         properties.put("quiet", true);
-        properties.put("threads", "8");
+
+        properties.put("threads", "4");
 
         properties.put("pos.model", "nlp/gate-EN-twitter.model");
 

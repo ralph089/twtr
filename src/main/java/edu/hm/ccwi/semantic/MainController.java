@@ -7,7 +7,9 @@ import edu.hm.ccwi.semantic.rdf.TwtrModel;
 import edu.hm.ccwi.semantic.tagger.StanfordTagger;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.ner.StanfordNER;
+import edu.hm.ccwi.semantic.tagger.ner.WatsonNER;
 import edu.hm.ccwi.semantic.tagger.triplet.OpenIETripletTagger;
+import edu.hm.ccwi.semantic.tagger.triplet.WatsonTripletTagger;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 

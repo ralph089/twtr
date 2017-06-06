@@ -1,11 +1,10 @@
 package edu.hm.ccwi.semantic.tagger.ner;
 
-import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Extracts {@link Triplet} from Tweets.
+ * Extracts Named Entities.
  *
  * @author Ralph Offinger
  */
@@ -17,10 +16,11 @@ public abstract class NERTagger {
     protected final Logger logger = LoggerFactory.getLogger(NERTagger.class);
 
     /**
-     * identify Name,organization location etc entities and return Category
+     * Tags a word as a Location, as a Person or as an Organization.
      *
-     * @param text -- data
-     * @return Category string
+     * @param word
+     * @param tweetText
+     * @return Category
      */
-    public abstract String identifyNER(String text);
+    public abstract String identifyNER(String word, String tweetText);
 }

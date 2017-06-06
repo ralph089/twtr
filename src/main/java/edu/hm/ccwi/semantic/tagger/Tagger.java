@@ -6,6 +6,7 @@ import edu.hm.ccwi.semantic.parser.RelationalEntry;
 import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.ner.NERTagger;
+import edu.hm.ccwi.semantic.tagger.ner.StanfordNER;
 import edu.hm.ccwi.semantic.tagger.triplet.TripletTagger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,7 @@ public abstract class Tagger {
     /**
      * The Logger.
      */
-    final Logger logger = LoggerFactory.getLogger(Tagger.class);
+    protected final Logger logger = LoggerFactory.getLogger(Tagger.class);
     /**
      * The Triplet tagger.
      */
@@ -32,6 +33,8 @@ public abstract class Tagger {
      * The Ner tagger.
      */
     NERTagger nerTagger;
+
+    StanfordNER userNerTagger = new StanfordNER();
 
     /**
      * Instantiates a new Triplet tagger.
@@ -52,7 +55,7 @@ public abstract class Tagger {
      */
     public TaggedTweet tagTweet(RelationalEntry entry) {
 
-        TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription(), tagEntity(entry.getUsername()));
+        TwitterUser twitterUser = new TwitterUser(entry.getFollower_count(), entry.getUserId(), entry.getUsername(), entry.getUserDescription(), userNerTagger.identifyNER(entry.getUsername()));
         Tweet tweet = new Tweet(entry.getTweet_id(), twitterUser, entry.getTweetText());
 
         List<TaggedSentence> taggedSentences = tagSentences(entry);

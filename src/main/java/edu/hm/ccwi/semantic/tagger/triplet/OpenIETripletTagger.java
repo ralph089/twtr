@@ -46,15 +46,15 @@ public class OpenIETripletTagger extends TripletTagger {
             Collection<RelationTriple> triples = sentence.get(NaturalLogicAnnotations.RelationTriplesAnnotation.class);
             for (RelationTriple triple : triples) {
 
-                logger.info(String.format("Found Triplet: Subject: %s, Verb (relation): %s, Object: %s",
-                        triple.subjectGloss(),
-                        triple.relationGloss(),
-                        triple.objectGloss()));
+                logger.info(String.format("Found Triplet (using lemma): Subject: %s, Verb: %s, Object: %s",
+                        triple.subjectLemmaGloss(),
+                        triple.relationLemmaGloss(),
+                        triple.objectLemmaGloss()));
 
                 Triplet triplet = new Triplet<Subj, Verb, Obj>(
-                        new Subj(triple.subjectGloss()),
-                        new Verb(triple.relationGloss()),
-                        new Obj(triple.objectGloss()));
+                        new Subj(triple.subjectLemmaGloss()),
+                        new Verb(triple.relationLemmaGloss()),
+                        new Obj(triple.objectLemmaGloss()));
 
                 if (!tripletList.contains(triplet)) {
                     tripletList.add(triplet);
