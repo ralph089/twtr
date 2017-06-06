@@ -26,7 +26,7 @@ public class StanfordNLP {
 
         properties.put("threads", "4");
 
-        properties.put("pos.model", "nlp/gate-EN-twitter.model");
+        properties.put("pos.model", "src/main/resources/nlp/gate-EN-twitter.model");
 
         pipeline = new StanfordCoreNLP(properties);
     }

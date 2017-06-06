@@ -3,7 +3,9 @@ package edu.hm.ccwi.semantic.tagger;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.NaturalLanguageUnderstanding;
 import com.ibm.watson.developer_cloud.natural_language_understanding.v1.model.*;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -23,7 +25,8 @@ public class WatsonNLP {
         Properties prop = new Properties();
 
         try {
-            prop.load(getClass().getClassLoader().getResourceAsStream("cred/bluemix.properties"));
+            InputStream input = new FileInputStream("src/main/resources/cred/bluemix.properties");
+            prop.load(input);
         } catch (IOException e) {
             e.printStackTrace();
             return;

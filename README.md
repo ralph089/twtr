@@ -5,6 +5,13 @@ TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu wer
 ## RDF Vokabular
 <img src="http://svgshare.com/i/1UR.svg">
 
+## Quickstart
+In der Kommandozeile folgendes eingeben, um das Projekt zu bauen.
+```
+mvn package
+```
+Anschließend kann die erzeugte .jar-Datei ausgeführt werden.
+
 ## Beispiel
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
 
