@@ -66,6 +66,8 @@ public class StanfordTagger extends Tagger {
 
         for (CoreMap sentence : sentences) {
 
+            logger.info(String.format("Analyzing sentence: %s", sentence.toString()));
+
             // Part of Speech
             HashSet<String> properNounList = new HashSet<>();
             HashSet<String> nounList = new HashSet<>();

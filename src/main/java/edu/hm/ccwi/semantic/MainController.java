@@ -39,7 +39,7 @@ public class MainController {
                 .parseRelationalExportedData("src/main/resources/tweets/twitter_IoT_pared_1.csv");
 
         // #2 nlp on data
-        List<StanfordTagger> taggers = Arrays.asList(new StanfordTagger(new OpenIETripletTagger(), new StanfordNER()));
+        List<StanfordTagger> taggers = Arrays.asList(new StanfordTagger(new WatsonTripletTagger(), new WatsonNER()));
 
         TwtrModel twitterModel = new TwtrModel();
         TwtrArq twtrArq = new TwtrArq(twitterModel);

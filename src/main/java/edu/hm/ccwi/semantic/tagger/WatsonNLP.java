@@ -87,6 +87,7 @@ public class WatsonNLP {
                             .text(tweetText)
                             .features(features)
                             .returnAnalyzedText(true)
+                            .language("en")
                             .build();
 
             AnalysisResults result = service.analyze(parameters).execute();
