@@ -196,7 +196,7 @@ Bei der Kategorisierung von Eigennamen wird der Autor und die Proper Nouns einer
 * Organization
 * Place
 
-Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Entity Recognition (NER) API oder der Watson NLU API.
+Die Kategorisierung von Eigennamen erfolgt derzeit über die Stanford Named Entity Recognition (NER) API oder über die Watson NLU API.
 
 ## Tasks:
 
