@@ -218,6 +218,7 @@ public class TwtrModel {
 
     private void createEntity(Resource res, String type) {
         if (type != null && res != null) {
+            type = type.toUpperCase();
             switch (type) {
                 case "PERSON":
                     res.addProperty(RDF.type, TWTR.Person);
