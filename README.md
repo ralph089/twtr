@@ -15,7 +15,7 @@ Nun kann das Projekt gebaut werden:
 ```
 mvn package
 ```
-Anschließend kann die erzeugte .jar-Datei ausgeführt werden.
+Anschließend kann die erzeugte .jar-Datei ausgeführt werden. Wird zusätzlich noch Fuseki mit dem Befehl `docker-compose up` gestartet, werden die Tweets automatisch in die Fuseki Datenbank exportiert.
 
 ## Beispiel
 Aus einer CSV-Datei wird folgender Datensatz eingelesen:
