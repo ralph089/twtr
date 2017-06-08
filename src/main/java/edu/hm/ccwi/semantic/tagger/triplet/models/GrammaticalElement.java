@@ -20,11 +20,6 @@ public class GrammaticalElement {
         this.word = word;
     }
 
-    /**
-     * Gets the word.
-     *
-     * @return the word
-     */
     public String getWord() {
         return word;
     }

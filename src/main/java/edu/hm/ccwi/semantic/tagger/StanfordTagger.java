@@ -1,25 +1,21 @@
 package edu.hm.ccwi.semantic.tagger;
 
+import edu.hm.ccwi.semantic.commons.utils.Combinations;
 import edu.hm.ccwi.semantic.commons.utils.TweetTextFilter;
 import edu.hm.ccwi.semantic.parser.RelationalEntry;
+import edu.hm.ccwi.semantic.tagger.keywords.KeywordTagger;
 import edu.hm.ccwi.semantic.tagger.models.ProperNoun;
 import edu.hm.ccwi.semantic.tagger.models.TaggedSentence;
 import edu.hm.ccwi.semantic.tagger.ner.NERTagger;
 import edu.hm.ccwi.semantic.tagger.triplet.TripletTagger;
-import edu.hm.ccwi.semantic.tagger.triplet.models.Obj;
-import edu.hm.ccwi.semantic.tagger.triplet.models.Subj;
-import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;
-import edu.hm.ccwi.semantic.tagger.triplet.models.Verb;
+import edu.hm.ccwi.semantic.tagger.triplet.models.*;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.util.CoreMap;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -45,9 +41,10 @@ public class StanfordTagger extends Tagger {
      *
      * @param tripletTagger the Triplet-tagger
      * @param nerTagger     the NER-tagger
+     * @param keywordTagger the keyword tagger
      */
-    public StanfordTagger(TripletTagger tripletTagger, NERTagger nerTagger) {
-        super(tripletTagger, nerTagger);
+    public StanfordTagger(TripletTagger tripletTagger, NERTagger nerTagger, KeywordTagger keywordTagger) {
+        super(tripletTagger, nerTagger, keywordTagger);
         pipeline = StanfordNLP.getInstance().getPipeline();
     }
 
@@ -55,16 +52,25 @@ public class StanfordTagger extends Tagger {
     protected List<TaggedSentence> tagSentences(RelationalEntry entry) {
 
         List<TaggedSentence> posTaggedSentences = new ArrayList<>();
-        logger.info("Tweet vor Filterung: " + entry.getTweetText());
+
         tweet = TweetTextFilter.clearTweet(entry.getTweetText());
-        logger.info("Tweet nach Filterung: " + tweet);
 
         Annotation document = new Annotation(tweet);
         pipeline.annotate(document);
 
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
 
+        List<Triplet<Subj, Verb, Obj>> tripletList = tripletTagger.tagTriplet(tweet);
+
         for (CoreMap sentence : sentences) {
+
+            List<Triplet<Subj, Verb, Obj>> tripletsInSentence = new ArrayList<>();
+
+            for (Triplet<Subj, Verb, Obj> triplet : tripletList) {
+                if (triplet.getSentence().equals(sentence.toString())) {
+                    tripletsInSentence.add(triplet);
+                }
+            }
 
             logger.info(String.format("Analyzing sentence: %s", sentence.toString()));
 
@@ -72,8 +78,6 @@ public class StanfordTagger extends Tagger {
             HashSet<String> properNounList = new HashSet<>();
             HashSet<String> nounList = new HashSet<>();
             HashSet<String> adjectiveList = new HashSet<>();
-
-            List<Triplet<Subj, Verb, Obj>> tripletList = tripletTagger.tagTriplet(sentence.toString());
 
             // Finds all nouns, proper nouns and adjective in the sentence.
             for (CoreLabel token : sentence.get(CoreAnnotations.TokensAnnotation.class)) {
@@ -84,13 +88,13 @@ public class StanfordTagger extends Tagger {
 
                 if (!isHashTagOrMention(word)) {
                     if (PROPERNOUN_TYPE.contains(pos)) {
-                        logger.debug(String.format("Adding Proper Noun: %s", word));
+                        logger.info(String.format("Adding Proper Noun: %s", word));
                         properNounList.add(word);
                     } else if (NOUN_TYPE.contains(pos)) {
-                        logger.debug(String.format("Adding Common Noun: %s", word));
+                        logger.info(String.format("Adding Common Noun: %s", word));
                         nounList.add(word);
                     } else if (ADJECTIVE_TYPE.contains(pos) && !adjectiveList.contains(word)) {
-                        logger.debug(String.format("Adding Adjective: %s", word));
+                        logger.info(String.format("Adding Adjective: %s", word));
                         adjectiveList.add(word);
                     }
                 }
@@ -99,60 +103,96 @@ public class StanfordTagger extends Tagger {
             HashSet<String> unrelatedProperNouns = new HashSet<>(properNounList);
             HashSet<String> unrelatedNouns = new HashSet<>(nounList);
 
-            for (Triplet triplet : tripletList) {
-                if (properNounList.contains(triplet.getSubject().getWord())) {
-                    triplet.getSubject().setProperNoun(true, triplet.getSubject().getWord());
-                    if (unrelatedProperNouns.contains(triplet.getSubject().getWord())) {
-                        unrelatedProperNouns.remove(triplet.getSubject().getWord());
-                    }
-                } else if (nounList.contains(triplet.getSubject().getWord())) {
-                    triplet.getSubject().setNoun(true);
-                    if (unrelatedNouns.contains(triplet.getSubject().getWord())) {
-                        unrelatedNouns.remove(triplet.getSubject().getWord());
-                    }
+            for (Triplet triplet : tripletsInSentence) {
+
+                Subj subject = triplet.getSubject();
+                Obj obj = triplet.getObject();
+
+                if (!tagSubjObj(properNounList, unrelatedProperNouns, subject)) {
+                    tagSubjObj(nounList, unrelatedNouns, subject);
                 }
 
-                if (properNounList.contains(triplet.getObject().getWord())) {
-                    triplet.getObject().setProperNoun(true, triplet.getObject().getWord());
-                    if (unrelatedProperNouns.contains(triplet.getObject().getWord())) {
-                        unrelatedProperNouns.remove(triplet.getObject().getWord());
-                    }
-                } else if (nounList.contains(triplet.getObject().getWord())) {
-                    triplet.getObject().setNoun(true);
-                    if (unrelatedNouns.contains(triplet.getObject().getWord())) {
-                        unrelatedNouns.remove(triplet.getObject().getWord());
-                    }
+                if (!tagSubjObj(properNounList, unrelatedProperNouns, obj)) {
+                    tagSubjObj(nounList, unrelatedNouns, obj);
                 }
             }
 
-            logger.debug("Unrelated Proper Noun List: " + unrelatedProperNouns);
-            logger.debug("Unrelated Common Noun List: " + unrelatedNouns);
+            logger.info("Unrelated Proper Noun List: " + unrelatedProperNouns);
+            logger.info("Unrelated Common Noun List: " + unrelatedNouns);
 
             HashSet<ProperNoun> unRelatedPropNounWithEntity = new HashSet<>();
             for (String properNoun : unrelatedProperNouns) {
                 unRelatedPropNounWithEntity.add(new ProperNoun(properNoun, tagEntity(properNoun)));
             }
 
-            TaggedSentence posTaggedSentence = new TaggedSentence(sentence.toString(), tripletList, adjectiveList, unRelatedPropNounWithEntity, unrelatedNouns);
+            TaggedSentence posTaggedSentence = new TaggedSentence(sentence.toString(), tripletsInSentence, adjectiveList, unRelatedPropNounWithEntity, unrelatedNouns);
             posTaggedSentences.add(posTaggedSentence);
         }
         return posTaggedSentences;
 
     }
 
+    private boolean tagSubjObj(HashSet<String> related, HashSet<String> unrelated, SubjObj subjobj) {
+
+        // Add each word from the subject to a Hashset
+        boolean found = false;
+
+        // Tweet: Donald Trump is President of America
+        // Proper Noun List: America, Donald, Trump, President
+        // Subject: Donald Trump
+        HashSet<String> objectWords = new HashSet<String>(Arrays.asList(subjobj.getWord().split("\\s+")));
+
+        // Possible Proper Nouns: Donald, Trump
+        List<String> possibleProperNouns = new ArrayList<>();
+
+        for (String properNoun : related) {
+            if (objectWords.contains(properNoun)) {
+
+                if (!subjobj.isProperNoun()) {
+                    possibleProperNouns.add(properNoun);
+                }
+                if (unrelated.contains(properNoun)) {
+                    unrelated.remove(properNoun);
+                }
+            }
+        }
+
+        logger.info("Possible Proper Nouns: " + possibleProperNouns);
+        if (possibleProperNouns.size() > 0) {
+            subjobj.setProperNoun();
+            found = true;
+
+            List<LinkedList<String>> combinations = new Combinations(possibleProperNouns).getCombinations();
+
+            outer:
+            for (LinkedList<String> combination : combinations) {
+
+                StringBuilder word = new StringBuilder();
+
+                for (String possibleProperNoun : combination) {
+                    word.append(possibleProperNoun);
+                    String entity = tagEntity(word.toString());
+                    if (entity != null && !Objects.equals(entity, "") && Objects.equals(subjobj.getEntity(), "")) {
+                        subjobj.setEntity(entity);
+                        break outer;
+                    }
+                    word.append(" ");
+                }
+            }
+        }
+        return found;
+    }
+
+
     @Override
     protected String tagEntity(String entityName) {
-        String category = nerTagger.identifyNER(entityName, tweet);
+        String category = nerTagger.findNamedEntity(entityName, tweet);
         logger.debug("NER: " + entityName + ": Category: " + category);
         return category;
     }
 
     private boolean isHashTagOrMention(String word) {
-        if (word.startsWith("@") || word.startsWith("#")) {
-            return true;
-        } else {
-            return false;
-        }
+        return word.startsWith("@") || word.startsWith("#");
     }
 }
 

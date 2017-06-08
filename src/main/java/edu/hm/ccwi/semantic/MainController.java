@@ -5,8 +5,11 @@ import edu.hm.ccwi.semantic.parser.RelationalParser;
 import edu.hm.ccwi.semantic.rdf.TwtrArq;
 import edu.hm.ccwi.semantic.rdf.TwtrModel;
 import edu.hm.ccwi.semantic.tagger.StanfordTagger;
+import edu.hm.ccwi.semantic.tagger.keywords.KeywordTagger;
+import edu.hm.ccwi.semantic.tagger.keywords.WatsonKWT;
 import edu.hm.ccwi.semantic.tagger.models.TaggedTweet;
 import edu.hm.ccwi.semantic.tagger.ner.StanfordNER;
+import edu.hm.ccwi.semantic.tagger.ner.WatsonNER;
 import edu.hm.ccwi.semantic.tagger.triplet.OpenIETripletTagger;
 import edu.hm.ccwi.semantic.tagger.triplet.WatsonTripletTagger;
 import org.apache.log4j.Logger;
@@ -20,7 +23,7 @@ import java.util.List;
  */
 public class MainController {
 
-    static Logger log = Logger.getLogger(MainController.class);
+    private static Logger log = Logger.getLogger(MainController.class);
 
     /**
      * Main.
@@ -38,10 +41,10 @@ public class MainController {
                 .parseRelationalExportedData("src/main/resources/tweets/twitter_IoT_pared_1.csv");
 
         // #2 nlp on data
-        List<StanfordTagger> taggers = Arrays.asList(new StanfordTagger(new OpenIETripletTagger(), new StanfordNER()));
+        List<StanfordTagger> taggers = Arrays.asList(new StanfordTagger(new WatsonTripletTagger(), new WatsonNER(), new WatsonKWT()));
 
         TwtrModel twitterModel = new TwtrModel();
-        TwtrArq twtrArq = new TwtrArq(twitterModel);
+        //TwtrArq twtrArq = new TwtrArq(twitterModel);
 
         for (RelationalEntry entry : twitterData) {
             log.info(String.format("Parsing Tweet: %s", entry.getTweetText()));
@@ -51,9 +54,10 @@ public class MainController {
                     TaggedTweet taggedTweet = tagger.tagTweet(entry);
                     if (taggedTweet != null) {
                         twitterModel.addTweet(taggedTweet);
-                        //taggedTweet.toCSV("src/main/resources/tweets/OpenIE_Triplet_Tagger.csv");
+                        taggedTweet.toCSV("src/main/resources/tweets/Watson_Triplet_Tagger.csv");
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     e.printStackTrace();
                 }
             }

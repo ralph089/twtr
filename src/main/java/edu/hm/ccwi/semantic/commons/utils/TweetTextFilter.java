@@ -67,8 +67,8 @@ public class TweetTextFilter {
      */
     public static String ensureSentenceEnding(String text) {
         if (text.length() > 0) {
-            if (text.charAt(text.length() - 1) != '.' ||
-                    text.charAt(text.length() - 1) != '?' ||
+            if (text.charAt(text.length() - 1) != '.' &&
+                    text.charAt(text.length() - 1) != '?' &&
                     text.charAt(text.length() - 1) != '!') {
                 text = (text + ".");
             } else if (text.charAt(text.length() - 1) == ':') {
@@ -97,6 +97,7 @@ public class TweetTextFilter {
      * @return the string
      */
     public static String clearTweet(String text) {
+        logger.info("Tweet vor Filterung: " + text);
         text = Validate.notEmpty(text);
         text = removeNonAscii(text);
         text = removeReTweet(text);
@@ -105,6 +106,7 @@ public class TweetTextFilter {
         text = removeURLs(text);
         text = text.trim();
         text = ensureSentenceEnding(text);
+        logger.info("Tweet nach Filterung: " + text);
 
         return text;
     }

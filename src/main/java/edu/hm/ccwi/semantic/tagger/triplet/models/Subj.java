@@ -3,18 +3,18 @@ package edu.hm.ccwi.semantic.tagger.triplet.models;
 /**
  * Created by ralph on 27.04.17.
  */
-public class Subj extends GrammaticalElement {
+public class Subj extends GrammaticalElement implements SubjObj {
 
     /**
      * The Is proper noun.
      */
-    boolean isProperNoun;
+    private boolean isProperNoun;
     /**
      * The Is noun.
      */
-    boolean isNoun;
+    private boolean isNoun;
 
-    private String entity;
+    private String entity = "";
 
     /**
      * Instantiates a new Subj.
@@ -46,13 +46,9 @@ public class Subj extends GrammaticalElement {
     /**
      * Sets proper noun.
      *
-     * @param properNoun the proper noun
-     * @param entity     the entity
      */
-    public void setProperNoun(boolean properNoun, String entity) {
-
-        isProperNoun = properNoun;
-        this.entity = entity;
+    public void setProperNoun() {
+        isProperNoun = true;
     }
 
     /**
@@ -67,18 +63,21 @@ public class Subj extends GrammaticalElement {
     /**
      * Sets noun.
      *
-     * @param noun the noun
      */
-    public void setNoun(boolean noun) {
-        isNoun = noun;
+    public void setNoun() {
+        isNoun = true;
     }
 
     @Override
     public String toString() {
-        return "Subj{" +
-                "word='" + word + '\'' +
-                ", isProperNoun=" + isProperNoun +
-                ", isNoun=" + isNoun +
-                '}';
+        return "Subj{"
+                + "word='" + word + '\''
+                + ", isProperNoun=" + isProperNoun
+                + ", isNoun=" + isNoun
+                + '}';
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 }

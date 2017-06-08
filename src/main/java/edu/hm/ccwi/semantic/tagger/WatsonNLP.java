@@ -24,12 +24,21 @@ public class WatsonNLP {
     private WatsonNLP() {
         Properties prop = new Properties();
 
+        InputStream input = null;
         try {
-            InputStream input = new FileInputStream("src/main/resources/cred/bluemix.properties");
+            input = new FileInputStream("src/main/resources/cred/bluemix.properties");
             prop.load(input);
         } catch (IOException e) {
             e.printStackTrace();
             return;
+        } finally {
+            try {
+                if (input != null) {
+                    input.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         service = new NaturalLanguageUnderstanding(

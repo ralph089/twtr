@@ -13,6 +13,7 @@ import org.apache.commons.lang3.Validate;
  */
 public class Triplet<S, V, O> {
 
+    private final String sentence;
     private final Subj subject;
     private final Verb verb;
     private final Obj object;
@@ -20,14 +21,16 @@ public class Triplet<S, V, O> {
     /**
      * Instantiates a new SVO-Triplet.
      *
-     * @param subject the subject
-     * @param verb    the verb
-     * @param object  the object
+     * @param subject  the subject
+     * @param verb     the verb
+     * @param object   the object
+     * @param sentence
      */
-    public Triplet(Subj subject, Verb verb, Obj object) {
+    public Triplet(Subj subject, Verb verb, Obj object, String sentence) {
         this.subject = Validate.notNull(subject, "Empty Subject not allowed");
         this.verb = Validate.notNull(verb, "Empty Verb not allowed!");
         this.object = Validate.notNull(object, "Empty Object not allowed!");
+        this.sentence = sentence;
     }
 
     /**
@@ -80,5 +83,9 @@ public class Triplet<S, V, O> {
         result = 31 * result + verb.hashCode();
         result = 31 * result + object.hashCode();
         return result;
+    }
+
+    public String getSentence() {
+        return sentence;
     }
 }

@@ -9,7 +9,6 @@ import org.apache.jena.query.DatasetAccessor;
 import org.apache.jena.query.DatasetAccessorFactory;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.reasoner.Reasoner;
-import org.apache.jena.reasoner.ReasonerRegistry;
 import org.apache.jena.reasoner.rulesys.RDFSRuleReasonerFactory;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
@@ -20,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -78,8 +79,11 @@ public class TwtrModel {
         tweet.addProperty(contains, pos);
         // End Tweet contains Elements
 
-        // Begin add Elements
+        // Begin Tweet has Keywords
+        createKeywords(tweet, taggedTweet.getKeywords());
+        // End Tweet has Keywords
 
+        // Begin add Elements
         for (TaggedSentence sentence : taggedTweet.getTaggedSentences()) {
             createTriplet(tweet, sentence, pos);
             createAdjectives(tweet, sentence, pos);
@@ -118,11 +122,13 @@ public class TwtrModel {
             Resource subject = model.createResource()
                     .addProperty(RDF.type, TWTR.Subject)
                     .addProperty(TWTR.word, triplet.getSubject().getWord())
-                    .addProperty(RDFS.subClassOf, triple);;
+                    .addProperty(RDFS.subClassOf, triple);
+            ;
 
-            if (triplet.getObject().isProperNoun()) {
+            if (triplet.getSubject().isProperNoun()) {
                 subject.addProperty(RDF.type, TWTR.ProperNoun);
-            } else if (triplet.getObject().isNoun()) {
+                createEntity(subject, triplet.getSubject().getEntity());
+            } else if (triplet.getSubject().isNoun()) {
                 subject.addProperty(RDF.type, TWTR.CommonNoun);
             }
 
@@ -130,16 +136,19 @@ public class TwtrModel {
             Resource verb = model.createResource()
                     .addProperty(RDF.type, TWTR.Verb)
                     .addProperty(TWTR.word, triplet.getVerb().getWord())
-                    .addProperty(RDFS.subClassOf, triple);;
+                    .addProperty(RDFS.subClassOf, triple);
+            ;
 
             // SVO is a object
             Resource object = model.createResource()
                     .addProperty(RDF.type, TWTR.Object)
                     .addProperty(TWTR.word, triplet.getObject().getWord())
-                    .addProperty(RDFS.subClassOf, triple);;
+                    .addProperty(RDFS.subClassOf, triple);
+            ;
 
             if (triplet.getObject().isProperNoun()) {
                 object.addProperty(RDF.type, TWTR.ProperNoun);
+                createEntity(object, triplet.getObject().getEntity());
             } else if (triplet.getObject().isNoun()) {
                 object.addProperty(RDF.type, TWTR.CommonNoun);
             }
@@ -187,13 +196,27 @@ public class TwtrModel {
     }
 
     private void createAdjectives(Resource tweet, TaggedSentence posTaggedSentence, Resource pos) {
-        // Adjectives
         for (String adjStr : posTaggedSentence.getAdjectives()) {
             Resource adjective = model.createResource()
                     .addProperty(RDF.type, TWTR.Adjective)
                     .addProperty(TWTR.word, adjStr);
             adjective.addProperty(RDFS.subClassOf, pos);
         }
+    }
+
+    private void createKeywords(Resource tweet, List<String> keywordList) {
+
+        Bag keywords = model.createBag();
+
+        for (String kw : keywordList) {
+            keywords.add(kw);
+        }
+
+        Property hasKeyword = TWTR.hasKeyword;
+        hasKeyword.addProperty(RDFS.domain, tweet);
+        hasKeyword.addProperty(RDFS.range, keywords);
+
+        tweet.addProperty(hasKeyword, keywords);
     }
 
     private Resource createTweet(TaggedTweet taggedTweet) {
@@ -217,19 +240,9 @@ public class TwtrModel {
     }
 
     private void createEntity(Resource res, String type) {
-        if (type != null && res != null) {
-            type = type.toUpperCase();
-            switch (type) {
-                case "PERSON":
-                    res.addProperty(RDF.type, TWTR.Person);
-                    break;
-                case "ORGANIZATION":
-                    res.addProperty(RDF.type, TWTR.Organisation);
-                    break;
-                case "LOCATION":
-                    res.addProperty(RDF.type, TWTR.Place);
-                    break;
-            }
+        if (type != null && res != null && !Objects.equals(type, "")) {
+            res.addProperty(RDF.type, TWTR.Entity);
+            res.addProperty(TWTR.entityName, type);
         }
     }
 }

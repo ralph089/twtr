@@ -5,6 +5,7 @@ import edu.hm.ccwi.semantic.commons.twitter.Tweet;
 import edu.hm.ccwi.semantic.tagger.triplet.models.Triplet;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,23 +24,28 @@ import java.util.List;
 public class TaggedTweet {
 
     private Tweet tweet;
+    private List<String> keywords;
     private List<TaggedSentence> taggedSentences;
     private List<String> mentionesList;
     private List<String> hashtagsList;
-
     /**
      * Instantiates a new Tagged tweet.
      *
      * @param tweet           the tweet
      * @param taggedSentences the pos tagged sentences
      */
-    public TaggedTweet(Tweet tweet, List<TaggedSentence> taggedSentences) {
+    public TaggedTweet(Tweet tweet, List<TaggedSentence> taggedSentences, List<String> keywords) {
         this.tweet = tweet;
         this.taggedSentences = taggedSentences;
+        this.keywords = keywords;
 
         Extractor extractor = new Extractor();
         this.hashtagsList = (ArrayList<String>) extractor.extractHashtags(this.tweet.getTweetText());
         this.mentionesList = (ArrayList<String>) extractor.extractMentionedScreennames(this.tweet.getTweetText());
+    }
+
+    public List<String> getKeywords() {
+        return keywords;
     }
 
     /**
@@ -87,14 +93,14 @@ public class TaggedTweet {
 
         char CSV_DELIMITER = ';';
 
-        PrintWriter pw = null;
+        OutputStreamWriter writer = null;
 
         final File file = new File(resourceUrl);
 
         boolean alreadyExists = file.exists();
 
         try {
-            pw = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));
+            writer = new OutputStreamWriter(new FileOutputStream(file, true), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
             return;
@@ -129,7 +135,11 @@ public class TaggedTweet {
             }
         }
 
-        pw.write(sb.toString());
-        pw.close();
+        try {
+            writer.write(sb.toString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

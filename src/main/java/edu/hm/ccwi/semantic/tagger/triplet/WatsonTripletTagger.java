@@ -38,7 +38,7 @@ public class WatsonTripletTagger extends TripletTagger {
                         verb,
                         object));
 
-                Triplet<Subj, Verb, Obj> triplet = new Triplet<>(subject, verb, object);
+                Triplet<Subj, Verb, Obj> triplet = new Triplet<>(subject, verb, object, result.getSentence());
                 semantics.add(triplet);
             }
         }

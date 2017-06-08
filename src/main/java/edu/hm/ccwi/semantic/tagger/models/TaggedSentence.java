@@ -23,7 +23,6 @@ public class TaggedSentence {
 
     /**
      * Instantiates a new Tagged sentence.
-     *
      * @param sentence             the sentence
      * @param triplets             the triplets
      * @param adjectives           the adjectives

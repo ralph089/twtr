@@ -11,13 +11,18 @@
     <url>http://maven.apache.org</url>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <jena.version>3.2.0</jena.version>
         <slf4j.version>1.7.25</slf4j.version>
         <poi.version>3.12</poi.version>
         <junit.version>4.11</junit.version>
         <jdk.version>1.8</jdk.version>
         <stanford.version>3.7.0</stanford.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+
+        <checkstyle.version>7.8.1</checkstyle.version>
+        <pmd.version>5.5.3</pmd.version>
     </properties>
 
     <dependencies>
@@ -167,12 +172,16 @@
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <transformers>
                         <!-- add Main-Class to manifest file -->
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                             <mainClass>edu.hm.ccwi.semantic.MainController</mainClass>
                         </transformer>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer" />
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
+                        <transformer
+                                implementation="org.apache.maven.plugins.shade.resource.ApacheNoticeResourceTransformer">
                             <addHeader>false</addHeader>
                         </transformer>
                     </transformers>
@@ -201,6 +210,36 @@
                 </executions>
             </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${checkstyle.maven.plugin}</version>
+                    <configuration>
+                        <configLocation>etc/checkstyle-configuration.xml</configLocation>
+                        <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>findbugs-maven-plugin</artifactId>
+                    <version>${findbugs.maven.plugin}</version>
+                    <configuration>
+                        <xmlOutput>true</xmlOutput>
+                        <findbugsXmlOutput>true</findbugsXmlOutput>
+                        <threshold>Low</threshold>
+                        <effort>Max</effort>
+                        <relaxed>false</relaxed>
+                        <fork>true</fork>
+                        <excludeFilterFile>etc/findbugs-exclusion-filter.xml</excludeFilterFile>
+                        <includeTests>true</includeTests>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
     </build>
 
     <repositories>

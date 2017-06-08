@@ -8,23 +8,19 @@ import java.util.List;
 /**
  * Watson Named Entity Tagger.
  * <p>
+ * More information here:
  * https://www.ibm.com/watson/developercloud/doc/natural-language-understanding/entity-types.html
  */
 public class WatsonNER extends NERTagger {
 
     @Override
-    public String identifyNER(String word, String tweetText) {
-        logger.info("Starting NER for Tweet: " + tweetText);
-        List<EntitiesResult> results = getNERResults(tweetText);
+    String identifyNE(String word, String tweetText) {
 
         for (EntitiesResult result : getNERResults(tweetText)) {
+            logger.debug(String.format("Watson results: %s ", result.getText()));
             if (result.getText().equals(word)) {
-                if (result.getType().equals("Organization") ||
-                        result.getType().equals("Person") ||
-                        result.getType().equals("Location")) {
-                    logger.info(String.format("Entity found: %s is a %s.", word, result.getType()));
-                    return result.getType();
-                }
+                logger.info(String.format("Entity found: %s is a %s.", word, result.getType()));
+                return result.getType();
             }
         }
         logger.info(String.format("Entity unknown: %s", word));

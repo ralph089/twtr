@@ -34,8 +34,8 @@ public class OpenIETripletTagger extends TripletTagger {
     }
 
     @Override
-    public List<Triplet<Subj, Verb, Obj>> tagTriplet(String tweetSentence) {
-        Annotation document = new Annotation(tweetSentence);
+    public List<Triplet<Subj, Verb, Obj>> tagTriplet(String tweetText) {
+        Annotation document = new Annotation(tweetText);
         pipeline.annotate(document);
 
         List<CoreMap> sentences = document.get(CoreAnnotations.SentencesAnnotation.class);
@@ -51,10 +51,11 @@ public class OpenIETripletTagger extends TripletTagger {
                         triple.relationLemmaGloss(),
                         triple.objectLemmaGloss()));
 
-                Triplet triplet = new Triplet<Subj, Verb, Obj>(
+                Triplet<Subj, Verb, Obj> triplet = new Triplet<Subj, Verb, Obj>(
                         new Subj(triple.subjectLemmaGloss()),
                         new Verb(triple.relationLemmaGloss()),
-                        new Obj(triple.objectLemmaGloss()));
+                        new Obj(triple.objectLemmaGloss()),
+                        sentence.toString());
 
                 if (!tripletList.contains(triplet)) {
                     tripletList.add(triplet);

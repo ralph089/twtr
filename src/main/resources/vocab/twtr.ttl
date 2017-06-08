@@ -21,26 +21,13 @@ twtr:Entity
   rdfs:isDefinedBy twtr: ;
   rdfs:label "Entity" .
 
-twtr:Person
-  rdf:type owl:Class , rdfs:Class ;
+twtr:entityName
+  rdf:type    rdf:Property , owl:DatatypeProperty ;
+  rdfs:comment "The name of the Entity." ;
   rdfs:isDefinedBy twtr: ;
-  rdfs:comment "Person" ;
-  rdfs:subClassOf twtr:Entity ;
-  rdfs:label "Person" .
-
-twtr:Organisation
-  rdf:type owl:Class , rdfs:Class ;
-  rdfs:isDefinedBy twtr: ;
-  rdfs:comment "Organisation" ;
-  rdfs:subClassOf twtr:Entity ;
-  rdfs:label "Organisation" .
-
-twtr:Place
-  rdf:type owl:Class , rdfs:Class ;
-  rdfs:isDefinedBy twtr: ;
-  rdfs:comment "Place" ;
-  rdfs:subClassOf twtr:Entity ;
-  rdfs:label "Place" .
+  rdfs:label "Entity Name" ;
+  rdfs:domain twtr:Entity ;
+  rdfs:range rdfs:Literal .
 
 ### A Twitter Account tweeted a Tweet.
 
@@ -73,6 +60,16 @@ twtr:contains
   rdfs:isDefinedBy twtr: ;
   rdfs:label "contains" ;
   rdfs:range twtr:POS .
+
+### A Tweet has Keyword
+
+twtr:hasKeyword
+  rdf:type    rdf:Property , owl:ObjectProperty ;
+  rdfs:comment "A Tweet has a keyword." ;
+  rdfs:domain twtr:Tweet ;
+  rdfs:isDefinedBy twtr: ;
+  rdfs:label "hasKeyword" ;
+  rdfs:range rdfs:Bag .
 
 ### POS
 

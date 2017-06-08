@@ -4,6 +4,7 @@ package edu.hm.ccwi.semantic.tagger.ner;
 import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
+import org.apache.commons.lang3.text.WordUtils;
 
 import java.util.List;
 
@@ -30,8 +31,7 @@ public class StanfordNER extends NERTagger {
     }
 
     @Override
-    public String identifyNER(String word, String tweetText) {
-        logger.info("Starting NER for Tweet: " + tweetText);
+    String identifyNE(String word, String tweetText) {
         List<List<CoreLabel>> classify = classifier.classify(word);
         for (List<CoreLabel> coreLabels : classify) {
             for (CoreLabel coreLabel : coreLabels) {
@@ -44,10 +44,6 @@ public class StanfordNER extends NERTagger {
         }
         logger.info(String.format("Entity unknown: %s", word));
         return "";
-    }
-
-    public String identifyNER(String word) {
-        return identifyNER(word, "");
     }
 }
 

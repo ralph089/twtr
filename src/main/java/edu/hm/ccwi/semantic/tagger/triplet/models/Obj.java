@@ -3,7 +3,7 @@ package edu.hm.ccwi.semantic.tagger.triplet.models;
 /**
  * Created by ralph on 27.04.17.
  */
-public class Obj extends GrammaticalElement {
+public class Obj extends GrammaticalElement implements SubjObj {
 
     /**
      * The Is proper noun.
@@ -13,10 +13,15 @@ public class Obj extends GrammaticalElement {
      * The Is noun.
      */
     boolean isNoun;
+
+    public void setEntity(String entity) {
+        this.entity = entity;
+    }
+
     /**
      * The Entity.
      */
-    String entity;
+    String entity = "";
 
     /**
      * Instantiates a new Obj.
@@ -48,12 +53,9 @@ public class Obj extends GrammaticalElement {
     /**
      * Sets proper noun.
      *
-     * @param properNoun the proper noun
-     * @param entity     the entity
      */
-    public void setProperNoun(boolean properNoun, String entity) {
-        isProperNoun = properNoun;
-        this.entity = entity;
+    public void setProperNoun() {
+        isProperNoun = true;
     }
 
     /**

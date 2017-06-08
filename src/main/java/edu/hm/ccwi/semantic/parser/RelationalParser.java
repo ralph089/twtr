@@ -3,12 +3,11 @@ package edu.hm.ccwi.semantic.parser;
 import net.sf.jsefa.Deserializer;
 import net.sf.jsefa.csv.CsvIOFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Parses a CSV file.
@@ -25,9 +24,9 @@ public class RelationalParser {
     public List<RelationalEntry> parseRelationalExportedData(String resourceUrl) {
 
         final File file = new File(resourceUrl);
-        Reader reader = null;
+        InputStreamReader reader = null;
         try {
-            reader = new FileReader(file);
+            reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -38,7 +37,7 @@ public class RelationalParser {
 
         while (deserializer.hasNext()) {
             RelationalEntry entry = deserializer.next();
-            if (entry != null && entry.getTweetText() != null && entry.getTweetText() != "") {
+            if (entry != null && entry.getTweetText() != null && !Objects.equals(entry.getTweetText(), "")) {
                 relationalEntryList.add(entry);
             }
         }

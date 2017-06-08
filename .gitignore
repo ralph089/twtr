@@ -157,3 +157,4 @@ src/main/java/edu/hm/ccwi/semantic/rdf/model/
 /src/main/resources/tweets/twitter_IoT_pared_100000.csv
 !/src/main/java/edu/hm/ccwi/semantic/tagger/triplet/WatsonTripletTagger.java
 !/src/main/java/edu/hm/ccwi/semantic/rdf/TwtrArq.java
+!/src/main/java/edu/hm/ccwi/semantic/tagger/triplet/TripletTagger.java
