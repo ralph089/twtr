@@ -121,7 +121,7 @@ WHERE
 
 #### Rückgabe
 ```
-| tweetText                                                                                                                              | properNoun |
+| tweetText                                                      | properNoun            |
 |----------------------------------------------------------------|-----------------------|
 | Donald Trump is President of America! Make America Great Again | "Donald Trump"        |
 ```
