@@ -6,7 +6,12 @@ TWTR ermöglicht dem Anwender ontologiegestützt nach Tweets zu suchen. Dazu wer
 <img src="http://svgshare.com/i/1s0.svg">
 
 ## Quickstart
-In der Kommandozeile folgendes eingeben, um das Projekt zu bauen.
+Derzeit existiert noch keine GUI. Daher müssen zunächst einige Einstellungen händisch vorgenommen werden. 
+
+1) blumix.properties hinterlegen (siehe Hinweis zu Watson im Bereich Triplet-Tagging) 
+2) Die Tweets im CSV-Format in der Datei `MainController.java` in der Variable `twitterData` angeben.
+ 
+Nun kann das Projekt gebaut werden:
 ```
 mvn package
 ```
