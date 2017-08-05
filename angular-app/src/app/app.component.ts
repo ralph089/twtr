@@ -24,6 +24,9 @@ export class AppComponent implements OnInit {
   // Saves if the Submit Button is activated
   submitActivated: boolean;
   submitActivatedMessage: string;
+  // The Fuseki Serverurl
+  serverUrl: string;
+  serverUrlPost: string;
 
   constructor(private fusekiService: FusekiService, private verbNormalisationService: VerbNormalisationService) {
     this.selection = {
@@ -68,6 +71,8 @@ export class AppComponent implements OnInit {
     };
     this.submitActivated = true;
     this.submitActivatedMessage = '';
+    this.serverUrl = 'http://192.168.99.100:3030/';
+    this.serverUrlPost = 'tdb/query'
     this.sparqlQuery = '';
   }
   ngOnInit(): void {
@@ -82,7 +87,7 @@ export class AppComponent implements OnInit {
   */
   loadAutorEntitys() {
     let results;
-    this.fusekiService.getEntitys('TwitterAccount'
+    this.fusekiService.getEntitys('TwitterAccount', this.serverUrl + this.serverUrlPost
     ).then(result => {
       for (let binding of result.results.bindings) {
         console.log(binding.entityName.value);
@@ -92,7 +97,7 @@ export class AppComponent implements OnInit {
   }
   loadSubjectEntities() {
     let results;
-    this.fusekiService.getEntitys('Subject'
+    this.fusekiService.getEntitys('Subject', this.serverUrl + this.serverUrlPost
     ).then(result => {
       for (let binding of result.results.bindings) {
         console.log(binding.entityName.value);
@@ -102,7 +107,7 @@ export class AppComponent implements OnInit {
   }
   loadObjectEntities() {
     let results;
-    this.fusekiService.getEntitys('Object'
+    this.fusekiService.getEntitys('Object', this.serverUrl + this.serverUrlPost
     ).then(result => {
       for (let binding of result.results.bindings) {
         console.log(binding.entityName.value);
@@ -183,6 +188,7 @@ export class AppComponent implements OnInit {
       }
     }
     );
+    this.updateSparqlQuery();
   }
 
   /*
@@ -451,7 +457,7 @@ LIMIT ` + Number(this.selection.limit);
   */
   sendSparql() {
     let results;
-    this.fusekiService.sendSparqlQuery(this.sparqlQuery
+    this.fusekiService.sendSparqlQuery(this.sparqlQuery, this.serverUrl + this.serverUrlPost
     ).then(
       data => {
       this.tableData = data;

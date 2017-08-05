@@ -9,27 +9,25 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class FusekiService {
 
-    serverUrl: string;
     constructor(private http: Http) {
         console.log('FusekiService Initialized');
-        this.serverUrl = 'http://192.168.99.100:3030/tdb/query';
     }
 
     /*
     Sends a SPQARL Query to Fuseki Server
     */
-    sendSparqlQuery(query: string): Promise<Complete[]> {
+    sendSparqlQuery(query: string, serverUrl:string): Promise<Complete[]> {
         let headers = new Headers({ 'Accept': 'application/sparql-results+json,*/*;q=0.9' });
         headers.append('X-Requested-With', 'XMLHttpRequest');
         headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         let options = new RequestOptions({ headers: headers });
 
-        return this.http.post(this.serverUrl, 'query=' + query,
+        return this.http.post(serverUrl, 'query=' + query,
             options).toPromise().then(this.extractData).catch(this.handleError);
 
     }
 
-    getEntitys(type: string): Promise<FusekiResult> {
+    getEntitys(type: string, serverUrl:string): Promise<FusekiResult> {
         let headers = new Headers({ 'Accept': 'application/sparql-results+json,*/*;q=0.9' });
         headers.append('X-Requested-With', 'XMLHttpRequest');
         headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -41,7 +39,7 @@ export class FusekiService {
                  WHERE { ?accout a               twtr:` + type + `;
                                  twtr:entityName ?entityName.
                  }`;
-        return this.http.post(this.serverUrl, 'query=' + query,
+        return this.http.post(serverUrl, 'query=' + query,
             options).toPromise().then(this.extractData).catch(this.handleError);
 
     }

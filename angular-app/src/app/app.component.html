@@ -5,6 +5,9 @@
     <div class="col-lg-3 section-grp">
       <h2>Selection</h2>
       <p>Insert a limit how many rows you want to recieve and select all the elements you want to see in the result table.</p>
+      <h4>Fuseki Server URL</h4>
+      <input [(ngModel)]="serverUrl" [typeahead]="states" class="form-control" name="serverUrl" 
+      tooltip="Insert the Fuseki Server URL to access your data. (http://IP:PORT/)"/>
       <h4>Limit</h4>
       <input [(ngModel)]="selection.limit" [typeahead]="states" class="form-control" name="limit" (keypress)="checkLimit($event)"
         (keyup)="checkChanges()" tooltip="Insert the maximum number of rows which get selected." id="limit" />
