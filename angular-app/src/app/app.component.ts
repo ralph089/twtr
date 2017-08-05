@@ -27,12 +27,13 @@ export class AppComponent implements OnInit {
   // The Fuseki Serverurl
   serverUrl: string;
   serverUrlPost: string;
+  serverError: boolean;
 
   constructor(private fusekiService: FusekiService, private verbNormalisationService: VerbNormalisationService) {
     this.serverUrl = 'http://192.168.99.100:3030/';
     this.serverUrlPost = 'tdb/query'
-    
   }
+
   ngOnInit(): void {
     this.selection = {
       limit: '100',
@@ -78,6 +79,7 @@ export class AppComponent implements OnInit {
     this.submitActivatedMessage = '';
     this.sparqlQuery = '';
     this.tableData = undefined;
+    this.serverError = false;
     this.loadAutorEntitys();
     this.loadSubjectEntities();
     this.loadObjectEntities();
@@ -462,8 +464,12 @@ LIMIT ` + Number(this.selection.limit);
     this.fusekiService.sendSparqlQuery(this.sparqlQuery, this.serverUrl + this.serverUrlPost
     ).then(
       data => {
+      this.serverError = false;
       this.tableData = data;
-      });
+    },
+    error =>{
+      this.serverError = true;
+    });
   }
 }
 interface Autor {

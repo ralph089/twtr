@@ -214,6 +214,9 @@
     <button type="button" class="btn-block btn btn-primary" (click)="sendSparql()" [disabled]="!submitActivated">Send Query</button>
     <div class="alert alert-danger" *ngIf="!submitActivated">{{submitActivatedMessage}}</div>
   </div>
+  <div class="alert alert-danger submit" *ngIf="serverError">
+    Something went wrong. Please check the server URL, look in the conole or contact your administrator.
+  </div>
   <div class="row" *ngIf='tableData!==undefiened'>
     <h2>Results</h2>
     <table class="table" >
