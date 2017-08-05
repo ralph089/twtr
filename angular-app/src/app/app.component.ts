@@ -29,6 +29,11 @@ export class AppComponent implements OnInit {
   serverUrlPost: string;
 
   constructor(private fusekiService: FusekiService, private verbNormalisationService: VerbNormalisationService) {
+    this.serverUrl = 'http://192.168.99.100:3030/';
+    this.serverUrlPost = 'tdb/query'
+    
+  }
+  ngOnInit(): void {
     this.selection = {
       limit: '100',
       autorName: true,
@@ -71,11 +76,8 @@ export class AppComponent implements OnInit {
     };
     this.submitActivated = true;
     this.submitActivatedMessage = '';
-    this.serverUrl = 'http://192.168.99.100:3030/';
-    this.serverUrlPost = 'tdb/query'
     this.sparqlQuery = '';
-  }
-  ngOnInit(): void {
+    this.tableData = undefined;
     this.loadAutorEntitys();
     this.loadSubjectEntities();
     this.loadObjectEntities();
