@@ -1,52 +1,33 @@
-import {ApplicationRef, NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
-import {HttpModule} from "@angular/http";
-import {FormsModule} from "@angular/forms";
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { SortableModule } from 'ngx-bootstrap/sortable';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { AppComponent } from './app.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
+import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
+import { Ng2TableModule } from 'ng2-table/ng2-table';
+import { NgTableComponent, NgTableFilteringDirective, NgTablePagingDirective, NgTableSortingDirective } from 'ng2-table/ng2-table';
+import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { VerbNormalisationService }  from './services/verbnormalisation.service';
+import { FusekiService } from './services/fuseki.service';
 
-import {AppComponent} from "./app.component";
-import {HomeComponent} from "./home/home.component";
-import {AboutComponent} from "./about/about.component";
-import {ApiService} from "./shared";
-import {routing} from "./app.routing";
-
-import {createNewHosts, removeNgStyles} from "@angularclass/hmr";
 
 @NgModule({
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
-    HttpModule,
     FormsModule,
-    routing
+    HttpModule,
+    SortableModule.forRoot(),
+    ButtonsModule.forRoot(),
+    TypeaheadModule.forRoot(),
+    TooltipModule.forRoot(),
+    Ng2TableModule
   ],
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    AboutComponent
-  ],
-  providers: [
-    ApiService
-  ],
+  providers: [VerbNormalisationService, FusekiService],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-  constructor(public appRef: ApplicationRef) {
-  }
-
-  hmrOnInit(store) {
-    console.log('HMR store', store);
-  }
-
-  hmrOnDestroy(store) {
-    let cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
-    // recreate elements
-    store.disposeOldHosts = createNewHosts(cmpLocation);
-    // remove styles
-    removeNgStyles();
-  }
-
-  hmrAfterDestroy(store) {
-    // display new elements
-    store.disposeOldHosts();
-    delete store.disposeOldHosts;
-  }
-}
+export class AppModule { }

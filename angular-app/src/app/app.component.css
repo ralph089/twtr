@@ -1,0 +1,67 @@
+.btn-full{
+    width: 100%;
+}
+
+.border-lite{
+    border: solid black 1px;
+}
+
+h1 {
+  color: white;
+  font-size: 250%;
+  background-color: black;
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-top: 0px;
+  padding: 15px;
+  text-align: center;
+}
+
+h2{
+    width: 100%;
+    text-align: center;
+}
+
+.full-size{
+    padding:0px;
+    margin: 0px;
+}
+
+.submit{
+    margin-left: 20%;
+    margin-right: 20%;
+}
+body:last-child{
+    margin-bottom: 30px;
+}
+
+.footer{
+    margin-top:50px;
+}
+footer{
+text-align: center;
+background: lightgrey;
+padding-top: 10px;
+padding-bottom: 10px;
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.query{
+    resize: vertical;
+    height: 200px;
+    max-height: 800px;
+}
+
+table {
+    counter-reset: rowNumber;
+}
+
+table tbody tr {
+    counter-increment: rowNumber;
+}
+
+table tbody tr td:first-child::before {
+    content: counter(rowNumber);
+    min-width: 1em;
+    margin-right: 0.5em;
+}
