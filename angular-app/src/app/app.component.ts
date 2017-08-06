@@ -288,7 +288,8 @@ SELECT DISTINCT `;
     }
     this.sparqlQuery += `
 WHERE { 
-  ?account    twtr:tweeted          ?tweet;
+  ?account    a                     twtr:TwitterAccount;
+              twtr:tweeted          ?tweet;
               twtr:userName         ?autorName;
               twtr:userID           ?autorID;
               twtr:userDescription  ?autorDescription;
